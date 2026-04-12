@@ -227,55 +227,79 @@ contexts:
       scope: constant.character.escape.dart
   strings:
     # r-prefixed (raw) strings — must come FIRST
-    - match: r"""
+    - match: (r)(""")
+      captures:
+        1: storage.type.string.dart
+        2: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.quoted.triple.double.dart
         - match: '"""(?!")'
+          scope: punctuation.definition.string.end.dart
           pop: 1
-    - match: r'''
+    - match: (r)(''')
+      captures:
+        1: storage.type.string.dart
+        2: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.quoted.triple.single.dart
         - match: "'''(?!')"
+          scope: punctuation.definition.string.end.dart
           pop: 1
-    - match: r"
+    - match: (r)(")
+      captures:
+        1: storage.type.string.dart
+        2: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.quoted.double.dart
         - match: '"'
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - match: \n
           scope: invalid.string.newline
-    - match: r'
+    - match: (r)(')
+      captures:
+        1: storage.type.string.dart
+        2: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.quoted.single.dart
         - match: "'"
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - match: \n
           scope: invalid.string.newline
     # interpolated strings — plain quotes, matched only if r-prefixed didn't fire
     - match: '"""'
+      scope: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.interpolated.triple.double.dart
         - match: '"""(?!")'
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - include: string-interp
     - match: "'''"
+      scope: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.interpolated.triple.single.dart
         - match: "'''(?!')"
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - include: string-interp
     - match: '"'
+      scope: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.interpolated.double.dart
         - match: '"'
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - match: \n
           scope: invalid.string.newline
         - include: string-interp
     - match: "'"
+      scope: punctuation.definition.string.begin.dart
       push:
         - meta_scope: string.interpolated.single.dart
         - match: "'"
+          scope: punctuation.definition.string.end.dart
           pop: 1
         - match: \n
           scope: invalid.string.newline

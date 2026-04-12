@@ -19,7 +19,7 @@ contexts:
         - match: ;
           captures:
             0: punctuation.terminator.dart
-          pop: true
+          pop: 1
         - include: strings
         - include: comments
         - match: \b(as|show|hide)\b
@@ -48,7 +48,7 @@ contexts:
         1: support.class.dart
       push:
         - match: (?!<)
-          pop: true
+          pop: 1
         - include: type-args
   class-identifier-with-optional-factory-method:
     - match: (?<!\$)\b(bool|num|int|double|dynamic)\b(?!\$)\s*(factory\b)?
@@ -65,7 +65,7 @@ contexts:
         2: entity.name.function.dart
       push:
         - match: (?!<)
-          pop: true
+          pop: 1
         - include: type-args
   comments:
     - match: /\*\*/
@@ -80,21 +80,21 @@ contexts:
       push:
         - meta_scope: comment.block.dart
         - match: \*/
-          pop: true
+          pop: 1
         - include: comments-block
   comments-doc:
     - match: ///
       push:
         - meta_scope: comment.block.documentation.dart
         - match: ^(?!\s*///)
-          pop: true
+          pop: 1
         - include: dartdoc
   comments-doc-oldschool:
     - match: /\*\*
       push:
         - meta_scope: comment.block.documentation.dart
         - match: \*/
-          pop: true
+          pop: 1
         - include: comments-doc-oldschool
         - include: comments-block
         - include: dartdoc
@@ -117,12 +117,12 @@ contexts:
     - match: ^\s*///\s*(```)
       push:
         - match: ^\s*///\s*(```)|^(?!\s*///)
-          pop: true
+          pop: 1
         - include: dartdoc-codeblock-triple
     - match: ^\s*\*\s*(```)
       push:
         - match: ^\s*\*\s*(```)|^(?=\s*\*/)
-          pop: true
+          pop: 1
         - include: dartdoc-codeblock-block
     - match: |-
         `[^`
@@ -136,13 +136,13 @@ contexts:
       push:
         - meta_content_scope: variable.other.source.dart
         - match: ""
-          pop: true
+          pop: 1
   dartdoc-codeblock-triple:
     - match: ^\s*///\s*(?!\s*```)
       push:
         - meta_content_scope: variable.other.source.dart
         - match: ""
-          pop: true
+          pop: 1
   expression:
     - include: constants-and-special-vars
     - include: class-identifier-with-optional-factory-method
@@ -153,7 +153,7 @@ contexts:
     - match: '\{'
       push:
         - match: '\}'
-          pop: true
+          pop: 1
         - include: expression
   function-identifier:
     - match: '([_$]*[a-z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\s*|\s+extends\s+)+>)?[!?]?\('
@@ -221,63 +221,65 @@ contexts:
       push:
         - meta_scope: meta.embedded.expression.dart
         - match: '\}'
-          pop: true
+          pop: 1
         - include: expression
     - match: \\.
       scope: constant.character.escape.dart
   strings:
-    - match: (?<!r)"""
-      push:
-        - meta_scope: string.interpolated.triple.double.dart
-        - match: '"""(?!")'
-          pop: true
-        - include: string-interp
-    - match: (?<!r)'''
-      push:
-        - meta_scope: string.interpolated.triple.single.dart
-        - match: "'''(?!')"
-          pop: true
-        - include: string-interp
+    # r-prefixed (raw) strings — must come FIRST
     - match: r"""
       push:
         - meta_scope: string.quoted.triple.double.dart
         - match: '"""(?!")'
-          pop: true
+          pop: 1
     - match: r'''
       push:
         - meta_scope: string.quoted.triple.single.dart
         - match: "'''(?!')"
-          pop: true
-    - match: (?<!\|r)"
-      push:
-        - meta_scope: string.interpolated.double.dart
-        - match: '"'
-          pop: true
-        - match: \n
-          scope: invalid.string.newline
-        - include: string-interp
+          pop: 1
     - match: r"
       push:
         - meta_scope: string.quoted.double.dart
         - match: '"'
-          pop: true
+          pop: 1
         - match: \n
           scope: invalid.string.newline
-    - match: (?<!\|r)'
-      push:
-        - meta_scope: string.interpolated.single.dart
-        - match: "'"
-          pop: true
-        - match: \n
-          scope: invalid.string.newline
-        - include: string-interp
     - match: r'
       push:
         - meta_scope: string.quoted.single.dart
         - match: "'"
-          pop: true
+          pop: 1
         - match: \n
           scope: invalid.string.newline
+    # interpolated strings — plain quotes, matched only if r-prefixed didn't fire
+    - match: '"""'
+      push:
+        - meta_scope: string.interpolated.triple.double.dart
+        - match: '"""(?!")'
+          pop: 1
+        - include: string-interp
+    - match: "'''"
+      push:
+        - meta_scope: string.interpolated.triple.single.dart
+        - match: "'''(?!')"
+          pop: 1
+        - include: string-interp
+    - match: '"'
+      push:
+        - meta_scope: string.interpolated.double.dart
+        - match: '"'
+          pop: 1
+        - match: \n
+          scope: invalid.string.newline
+        - include: string-interp
+    - match: "'"
+      push:
+        - meta_scope: string.interpolated.single.dart
+        - match: "'"
+          pop: 1
+        - match: \n
+          scope: invalid.string.newline
+        - include: string-interp
   type-args:
     - match: (<)
       captures:
@@ -286,7 +288,7 @@ contexts:
         - match: (>)
           captures:
             1: other.source.dart
-          pop: true
+          pop: 1
         - include: class-identifier
         - match: ","
         - match: extends

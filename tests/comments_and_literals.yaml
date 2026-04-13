@@ -1,0 +1,113 @@
+syntax: "Dart.sublime-syntax"
+comment_char: "//"
+tests:
+  - line: "// Plain line comment"
+    assertions:
+      - span: "//"
+        scopes: [punctuation.definition.comment.dart]
+      - span: "Plain line comment"
+        scopes: [comment.line.double-slash.dart]
+
+  - line: "/// Docs"
+    assertions:
+      - span: "///"
+        scopes: [punctuation.definition.comment.dart]
+      - span: "Docs"
+        scopes: [comment.line.documentation.dart]
+
+  - line: "/** block docs */"
+    assertions:
+      - span: "/**"
+        scopes: [punctuation.definition.comment.begin.dart]
+      - span: "block docs"
+        scopes: [comment.block.documentation.dart]
+      - span: "*/"
+        scopes: [punctuation.definition.comment.end.dart]
+
+  - line: "/* block */"
+    assertions:
+      - span: "/*"
+        scopes: [punctuation.definition.comment.begin.dart]
+      - span: "block"
+        scopes: [comment.block.dart]
+      - span: "*/"
+        scopes: [punctuation.definition.comment.end.dart]
+
+  - line: "const a = 42;"
+    assertions:
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "a"
+        scopes: [variable.other.readwrite.dart]
+      - span: "="
+        scopes: [keyword.operator.assignment.dart]
+      - span: "42"
+        scopes: [constant.numeric.integer.decimal.dart]
+
+  - line: "final b = 3.14e2;"
+    assertions:
+      - span: "final"
+        scopes: [storage.modifier.dart]
+      - span: "3.14e2"
+        scopes: [constant.numeric.float.dart]
+
+  - line: "final c = 0xFF_A0;"
+    assertions:
+      - span: "0xFF_A0"
+        scopes: [constant.numeric.integer.hexadecimal.dart]
+
+  - line: "final ok = true;"
+    assertions:
+      - span: "true"
+        scopes: [constant.language.dart]
+
+  - line: "final nothing = null;"
+    assertions:
+      - span: "null"
+        scopes: [constant.language.dart]
+
+  - line: "final s = 'hi \\n';"
+    assertions:
+      - span: "'"
+        scopes: [punctuation.definition.string.begin.dart]
+        nth: 0
+      - span: "\\n"
+        scopes: [string.quoted.single.dart, constant.character.escape.dart]
+      - span: "'"
+        scopes: [punctuation.definition.string.end.dart]
+        nth: 1
+
+  - line: "final d = \"value $name\";"
+    assertions:
+      - span: "\""
+        scopes: [punctuation.definition.string.begin.dart]
+        nth: 0
+      - span: "$name"
+        scopes: [string.quoted.double.dart, variable.interpolation.dart]
+      - span: "\""
+        scopes: [punctuation.definition.string.end.dart]
+        nth: 1
+
+  - line: "final e = 'value ${a + b}';"
+    assertions:
+      - span: "${"
+        scopes: [meta.interpolation.dart, source.dart.embedded, punctuation.section.interpolation.begin.dart]
+      - span: "a"
+        scopes: [meta.interpolation.dart, source.dart.embedded, variable.other.readwrite.dart]
+        nth: 2
+      - span: "+"
+        scopes: [meta.interpolation.dart, source.dart.embedded, keyword.operator.arithmetic.dart]
+      - span: "}"
+        scopes: [meta.interpolation.dart, source.dart.embedded, punctuation.section.interpolation.end.dart]
+
+  - line: "final raw = r'${notInterpolated}';"
+    assertions:
+      - span: "r'"
+        scopes: [storage.type.string.dart, punctuation.definition.string.begin.dart]
+      - span: "${notInterpolated}"
+        scopes: [string.quoted.single.dart]
+
+  - line: "final sym = #foo.bar;"
+    assertions:
+      - span: "#foo.bar"
+        scopes: [constant.other.symbol.dart]

@@ -1,0 +1,119 @@
+syntax: "Dart.sublime-syntax"
+comment_char: "//"
+tests:
+  - line: "enum Planet { final double mass; }"
+    assertions:
+      - span: "final"
+        scopes: [meta.enum.body.dart, storage.modifier.dart]
+      - span: "double"
+        scopes: [meta.enum.body.dart, storage.type.dart]
+      - span: "mass"
+        scopes: [meta.enum.body.dart, variable.other.readwrite.dart]
+
+  - line: "var buffers = charCodes.map(StringBuffer.new);"
+    assertions:
+      - span: "var"
+        scopes: [storage.modifier.dart]
+      - span: "buffers"
+        scopes: [variable.other.readwrite.dart]
+      - span: "charCodes"
+        scopes: [variable.other.dart]
+      - span: "map"
+        scopes: [variable.function.dart]
+      - span: "StringBuffer"
+        scopes: [support.type.dart]
+      - span: "new"
+        scopes: [keyword.operator.word.dart]
+
+  - line: "class Circle extends Shape {}"
+    assertions:
+      - span: "extends"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+      - span: "Shape"
+        scopes: [meta.class.dart, entity.other.inherited-class.dart]
+
+  - line: "Circle(color: 'red', radius: 5.0)"
+    assertions:
+      - span: "color"
+        scopes: [variable.parameter.dart]
+      - span: "radius"
+        scopes: [variable.parameter.dart]
+      - span: "'red'"
+        scopes: [string.quoted.single.dart]
+      - span: "5.0"
+        scopes: [constant.numeric.float.dart]
+
+  - line: "String get label => '${runtimeType}#$id';"
+    assertions:
+      - span: "runtimeType"
+        scopes: [meta.interpolation.dart, source.dart.embedded, variable.other.readwrite.dart]
+      - span: "$id"
+        scopes: [meta.interpolation.dart, variable.interpolation.dart]
+
+  - line: "_ = ordered; // suppress unused warning"
+    assertions:
+      - span: "_"
+        scopes: [variable.language.anonymous.dart]
+      - span: "ordered"
+        scopes: [variable.other.readwrite.dart]
+
+  - line: "List<T> myMap<T, U>(List<U> list, T Function(U) f) => [for (final x in list) f(x)];"
+    assertions:
+      - span: "List"
+        scopes: [support.type.dart]
+        nth: 0
+      - span: "myMap"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "T"
+        scopes: [meta.function.dart, meta.generic.dart, entity.name.type.parameter.dart]
+        nth: 1
+      - span: "U"
+        scopes: [meta.function.dart, meta.generic.dart, entity.name.type.parameter.dart]
+        nth: 0
+      - span: "Function"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "f"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "throw ArgumentError('Invalid ID: $id');"
+    assertions:
+      - span: "throw"
+        scopes: [keyword.control.dart]
+      - span: "ArgumentError"
+        scopes: [support.type.dart]
+
+  - line: "return _expensiveWork(n);"
+    assertions:
+      - span: "return"
+        scopes: [keyword.control.dart]
+      - span: "_expensiveWork"
+        scopes: [variable.function.dart]
+
+  - line: "await runZonedGuarded();"
+    assertions:
+      - span: "await"
+        scopes: [keyword.control.dart]
+      - span: "runZonedGuarded"
+        scopes: [variable.function.dart]
+
+  - line: "factory Either.left(L value) => Either._left(value);"
+    assertions:
+      - span: "factory"
+        scopes: [meta.function.constructor.dart, keyword.declaration.function.dart]
+      - span: "Either"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+      - span: "left"
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+
+  - line: "switch (value) { case 0: return 1; default: throw StateError('x'); }"
+    assertions:
+      - span: "switch"
+        scopes: [keyword.control.dart]
+      - span: "case"
+        scopes: [keyword.control.dart]
+      - span: "return"
+        scopes: [keyword.control.dart]
+      - span: "default"
+        scopes: [keyword.control.dart]
+      - span: "throw"
+        scopes: [keyword.control.dart]

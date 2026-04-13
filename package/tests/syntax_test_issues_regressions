@@ -1,0 +1,78 @@
+// SYNTAX TEST "Dart.sublime-syntax"
+
+enum Planet { final double mass; }
+//            ^^^^^ meta.enum.body.dart storage.modifier.dart
+//                  ^^^^^^ meta.enum.body.dart storage.type.dart
+//                         ^^^^ meta.enum.body.dart variable.other.readwrite.dart
+
+var buffers = charCodes.map(StringBuffer.new);
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^ storage.modifier.dart
+//  ^^^^^^^ variable.other.readwrite.dart
+//            ^^^^^^^^^ variable.other.dart
+//                      ^^^ variable.function.dart
+//                          ^^^^^^^^^^^^ support.type.dart
+//                                       ^^^ keyword.operator.word.dart
+
+class Circle extends Shape {}
+//           ^^^^^^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//                   ^^^^^ meta.class.dart entity.other.inherited-class.dart
+
+Circle(color: 'red', radius: 5.0)
+//     ^^^^^ variable.parameter.dart
+//                   ^^^^^^ variable.parameter.dart
+//            ^^^^^ string.quoted.single.dart
+//                           ^^^ constant.numeric.float.dart
+
+String get label => '${runtimeType}#$id';
+//                     ^^^^^^^^^^^ meta.interpolation.dart source.dart.embedded variable.other.readwrite.dart
+//                                  ^^^ meta.interpolation.dart variable.interpolation.dart
+
+_ = ordered; // suppress unused warning
+// <- variable.language.anonymous.dart
+//  ^^^^^^^ variable.other.readwrite.dart
+
+List<T> myMap<T, U>(List<U> list, T Function(U) f) => [for (final x in list) f(x)];
+// <- support.type.dart
+ // <- support.type.dart
+//^^ support.type.dart
+//      ^^^^^ meta.function.dart entity.name.function.dart
+//            ^ meta.function.dart meta.generic.dart entity.name.type.parameter.dart
+//               ^ meta.function.dart meta.generic.dart entity.name.type.parameter.dart
+//                                  ^^^^^^^^ meta.function.parameters.dart storage.type.dart
+//                                              ^ meta.function.parameters.dart variable.parameter.dart
+
+throw ArgumentError('Invalid ID: $id');
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^ keyword.control.dart
+//    ^^^^^^^^^^^^^ support.type.dart
+
+return _expensiveWork(n);
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^^ keyword.control.dart
+//     ^^^^^^^^^^^^^^ variable.function.dart
+
+await runZonedGuarded();
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^ keyword.control.dart
+//    ^^^^^^^^^^^^^^^ variable.function.dart
+
+factory Either.left(L value) => Either._left(value);
+// <- meta.function.constructor.dart keyword.declaration.function.dart
+ // <- meta.function.constructor.dart keyword.declaration.function.dart
+//^^^^^ meta.function.constructor.dart keyword.declaration.function.dart
+//      ^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//             ^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+
+switch (value) { case 0: return 1; default: throw StateError('x'); }
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^^ keyword.control.dart
+//               ^^^^ keyword.control.dart
+//                       ^^^^^^ keyword.control.dart
+//                                 ^^^^^^^ keyword.control.dart
+//                                          ^^^^^ keyword.control.dart

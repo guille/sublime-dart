@@ -1,0 +1,97 @@
+// SYNTAX TEST "Dart.sublime-syntax"
+
+class Point<T extends num> extends Shape with Mixin implements Drawable {}
+// <- meta.class.dart keyword.declaration.class.dart
+ // <- meta.class.dart keyword.declaration.class.dart
+//^^^ meta.class.dart keyword.declaration.class.dart
+//    ^^^^^ meta.class.dart entity.name.class.dart
+//         ^ meta.class.dart meta.generic.dart punctuation.definition.generic.begin.dart
+//          ^ meta.class.dart meta.generic.dart entity.name.type.parameter.dart
+//            ^^^^^^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//                    ^^^ meta.class.dart meta.generic.dart storage.type.dart
+//                                 ^^^^^ meta.class.dart entity.other.inherited-class.dart
+//                                       ^^^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//                                            ^^^^^ meta.class.dart entity.other.inherited-class.dart
+//                                                  ^^^^^^^^^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//                                                             ^^^^^^^^ meta.class.dart entity.other.inherited-class.dart
+//                                                                      ^ meta.block.dart punctuation.section.block.begin.dart
+
+mixin Logger on Service implements Disposable {}
+// <- meta.class.dart keyword.declaration.class.dart
+ // <- meta.class.dart keyword.declaration.class.dart
+//^^^ meta.class.dart keyword.declaration.class.dart
+//    ^^^^^^ meta.class.dart entity.name.class.dart
+//           ^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//              ^^^^^^^ meta.class.dart entity.other.inherited-class.dart
+//                                            ^ meta.block.dart punctuation.section.block.begin.dart
+
+extension FancyList<T> on List<T> {}
+// <- meta.class.dart keyword.declaration.class.dart
+ // <- meta.class.dart keyword.declaration.class.dart
+//^^^^^^^ meta.class.dart keyword.declaration.class.dart
+//        ^^^^^^^^^ meta.class.dart entity.name.class.dart
+//                  ^ meta.class.dart meta.generic.dart entity.name.type.parameter.dart
+//                     ^^ meta.class.dart keyword.declaration.class.inheritance.dart
+//                        ^^^^ meta.class.dart support.type.dart
+//                                ^ meta.block.dart punctuation.section.block.begin.dart
+
+enum Color { red, blue }
+// <- meta.enum.dart keyword.declaration.class.dart
+ // <- meta.enum.dart keyword.declaration.class.dart
+//^^ meta.enum.dart keyword.declaration.class.dart
+//   ^^^^^ meta.enum.dart entity.name.enum.dart
+//           ^^^ meta.enum.body.dart entity.name.constant.dart
+//                ^^^^ meta.enum.body.dart entity.name.constant.dart
+//                     ^ punctuation.section.block.end.dart
+
+typedef Mapper<T> = T Function(String value);
+// <- meta.declaration.typealias.dart keyword.declaration.type.dart
+ // <- meta.declaration.typealias.dart keyword.declaration.type.dart
+//^^^^^ meta.declaration.typealias.dart keyword.declaration.type.dart
+//      ^^^^^^ meta.declaration.typealias.dart entity.name.type.dart
+//             ^ meta.declaration.typealias.dart meta.generic.dart entity.name.type.parameter.dart
+//                ^ meta.declaration.typealias.dart keyword.operator.assignment.dart
+//                    ^^^^^^^^ meta.declaration.typealias.dart storage.type.dart
+//                             ^^^^^^ meta.declaration.typealias.dart storage.type.dart
+
+@deprecated
+// <- punctuation.definition.annotation.dart
+ // <- meta.annotation.dart variable.annotation.dart
+//^^^^^^^^^ meta.annotation.dart variable.annotation.dart
+
+@JsonKey(name: 'id')
+ // <- meta.annotation.dart variable.annotation.dart
+//^^^^^^ meta.annotation.dart variable.annotation.dart
+//      ^ meta.function-call.arguments.dart punctuation.section.arguments.begin.dart
+//       ^^^^ meta.function-call.arguments.dart variable.parameter.dart
+//             ^^^^ meta.function-call.arguments.dart string.quoted.single.dart
+
+int parse(String value, {required int radix = 10}) => 0;
+// <- meta.function.dart storage.type.dart
+ // <- meta.function.dart storage.type.dart
+//^ meta.function.dart storage.type.dart
+//  ^^^^^ meta.function.dart entity.name.function.dart
+//       ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
+//        ^^^^^^ meta.function.parameters.dart storage.type.dart
+//               ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                       ^^^^^^^^ meta.function.parameters.dart storage.modifier.dart
+//                                    ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                            ^^ meta.function.parameters.dart constant.numeric.integer.decimal.dart
+//                                                 ^^ keyword.operator.arrow.dart
+
+String get name => _name;
+// <- meta.function.accessor.dart storage.type.dart
+ // <- meta.function.accessor.dart storage.type.dart
+//^^^^ meta.function.accessor.dart storage.type.dart
+//     ^^^ meta.function.accessor.dart keyword.declaration.function.dart
+//         ^^^^ meta.function.accessor.dart entity.name.function.dart
+//              ^^ keyword.operator.arrow.dart
+
+set value(int next) {}
+// <- meta.function.accessor.dart keyword.declaration.function.dart
+ // <- meta.function.accessor.dart keyword.declaration.function.dart
+//^ meta.function.accessor.dart keyword.declaration.function.dart
+//  ^^^^^ meta.function.accessor.dart entity.name.function.dart
+//        ^^^ meta.function.parameters.dart storage.type.dart
+//            ^^^^ meta.function.parameters.dart variable.parameter.dart
+//                  ^ meta.block.dart punctuation.section.block.begin.dart

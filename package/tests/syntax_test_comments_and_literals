@@ -1,0 +1,71 @@
+// SYNTAX TEST "Dart.sublime-syntax"
+
+// Plain line comment
+// <- punctuation.definition.comment.dart
+ // <- punctuation.definition.comment.dart
+// ^^^^^^^^^^^^^^^^^^ comment.line.double-slash.dart
+
+/// Docs
+// <- punctuation.definition.comment.dart
+ // <- punctuation.definition.comment.dart
+//^ punctuation.definition.comment.dart
+//  ^^^^ comment.line.documentation.dart
+
+/** block docs */
+// <- punctuation.definition.comment.begin.dart
+ // <- punctuation.definition.comment.begin.dart
+//^ punctuation.definition.comment.begin.dart
+//  ^^^^^^^^^^ comment.block.documentation.dart
+//             ^^ punctuation.definition.comment.end.dart
+
+/* block */
+// <- punctuation.definition.comment.begin.dart
+ // <- punctuation.definition.comment.begin.dart
+// ^^^^^ comment.block.dart
+//       ^^ punctuation.definition.comment.end.dart
+
+const a = 42;
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^ storage.modifier.dart
+//    ^ variable.other.readwrite.dart
+//      ^ keyword.operator.assignment.dart
+//        ^^ constant.numeric.integer.decimal.dart
+
+final b = 3.14e2;
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^ storage.modifier.dart
+//        ^^^^^^ constant.numeric.float.dart
+
+final c = 0xFF_A0;
+//        ^^^^^^^ constant.numeric.integer.hexadecimal.dart
+
+final ok = true;
+//         ^^^^ constant.language.dart
+
+final nothing = null;
+//              ^^^^ constant.language.dart
+
+final s = 'hi \n';
+//        ^ punctuation.definition.string.begin.dart
+//            ^^ string.quoted.single.dart constant.character.escape.dart
+//              ^ punctuation.definition.string.end.dart
+
+final d = "value $name";
+//        ^ punctuation.definition.string.begin.dart
+//               ^^^^^ string.quoted.double.dart variable.interpolation.dart
+//                    ^ punctuation.definition.string.end.dart
+
+final e = 'value ${a + b}';
+//               ^^ meta.interpolation.dart source.dart.embedded punctuation.section.interpolation.begin.dart
+//                 ^ meta.interpolation.dart source.dart.embedded variable.other.readwrite.dart
+//                   ^ meta.interpolation.dart source.dart.embedded keyword.operator.arithmetic.dart
+//                      ^ meta.interpolation.dart source.dart.embedded punctuation.section.interpolation.end.dart
+
+final raw = r'${notInterpolated}';
+//          ^^ storage.type.string.dart punctuation.definition.string.begin.dart
+//            ^^^^^^^^^^^^^^^^^^ string.quoted.single.dart
+
+final sym = #foo.bar;
+//          ^^^^^^^^ constant.other.symbol.dart

@@ -1,0 +1,68 @@
+syntax: "Dart.sublime-syntax"
+comment_char: "//"
+tests:
+  - line: "#!/usr/bin/env dart"
+    assertions:
+      - span: "#!"
+        scopes: [punctuation.definition.comment.dart]
+      - span: "dart"
+        scopes: [comment.line.shebang.dart, constant.language.shebang.dart]
+
+  - line: "library foo.bar;"
+    assertions:
+      - span: "library"
+        scopes: [meta.declaration.namespace.dart, keyword.control.import.dart]
+      - span: "foo"
+        scopes: [meta.declaration.namespace.dart, entity.name.namespace.dart]
+      - span: "."
+        scopes: [meta.declaration.namespace.dart, punctuation.accessor.dart]
+      - span: "bar"
+        scopes: [meta.declaration.namespace.dart, entity.name.namespace.dart]
+      - span: ";"
+        scopes: [meta.declaration.namespace.dart, punctuation.terminator.dart]
+
+  - line: "import 'dart:math' as math;"
+    assertions:
+      - span: "import"
+        scopes: [meta.declaration.import.dart, keyword.control.import.dart]
+      - span: "'dart:math'"
+        scopes: [meta.declaration.import.dart, string.quoted.single.dart]
+      - span: "'"
+        scopes: [meta.declaration.import.dart, punctuation.definition.string.begin.dart]
+        nth: 0
+      - span: "'"
+        scopes: [meta.declaration.import.dart, punctuation.definition.string.end.dart]
+        nth: 1
+      - span: "as"
+        scopes: [meta.declaration.import.dart, keyword.control.import.dart]
+      - span: "math"
+        scopes: [meta.declaration.import.dart, variable.other.readwrite.dart]
+        nth: 1
+      - span: ";"
+        scopes: [meta.declaration.import.dart, punctuation.terminator.dart]
+
+  - line: "export 'src/api.dart' show Api, Client;"
+    assertions:
+      - span: "export"
+        scopes: [meta.declaration.export.dart, keyword.control.import.dart]
+      - span: "'src/api.dart'"
+        scopes: [meta.declaration.export.dart, string.quoted.single.dart]
+      - span: "show"
+        scopes: [meta.declaration.export.dart, keyword.control.import.dart]
+      - span: "Api"
+        scopes: [meta.declaration.export.dart, variable.other.readwrite.dart]
+      - span: "Client"
+        scopes: [meta.declaration.export.dart, variable.other.readwrite.dart]
+      - span: ","
+        scopes: [meta.declaration.export.dart, punctuation.separator.comma.dart]
+
+  - line: "part of foo.bar;"
+    assertions:
+      - span: "part"
+        scopes: [meta.declaration.import.dart, keyword.control.import.dart]
+      - span: "of"
+        scopes: [meta.declaration.import.dart, keyword.control.import.dart]
+      - span: "foo"
+        scopes: [meta.declaration.import.dart, entity.name.namespace.dart]
+      - span: "bar"
+        scopes: [meta.declaration.import.dart, entity.name.namespace.dart]

@@ -1,0 +1,1237 @@
+%YAML 1.2
+---
+name: Dart
+file_extensions:
+  - dart
+first_line_match: '^\s*#!.*\bdart\b'
+scope: source.dart
+version: 2
+
+variables:
+  identifier_start: '[A-Za-z_$]'
+  identifier_part: '[A-Za-z0-9_$]'
+  identifier: '(?:{{identifier_start}}{{identifier_part}}*)'
+  type_identifier: '(?:[A-Z]{{identifier_part}}*)'
+  shebang_language: '\bdart\b'
+  keyword_boundary: '(?!{{identifier_part}})'
+  builtin_types: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)'
+  storage_modifiers: '(?:abstract|augment|base|const|covariant|external|final|interface|late|required|sealed|static)'
+  declaration_keywords: '(?:class|enum|export|extension|factory|get|implements|import|library|mixin|operator|part|set|typedef|with)'
+  control_keywords: '(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|is|on|rethrow|return|switch|throw|try|when|while|yield)'
+  constants: '(?:false|null|super|this|true)'
+  reserved_word: '(?:{{storage_modifiers}}|{{declaration_keywords}}|{{control_keywords}}|{{builtin_types}}|{{constants}}|as|async|await|deferred|extends|hide|new|of|show|sync|type|var)'
+  plain_identifier: '(?!{{reserved_word}}{{keyword_boundary}}){{identifier}}'
+  numeric_separator_digits: '[0-9](?:_?[0-9])*'
+  numeric_separator_hex: '{{hex_digit}}(?:_?{{hex_digit}})*'
+  hex_digit: '[0-9A-Fa-f]'
+  exponent: '[eE][+-]?{{numeric_separator_digits}}'
+  decimal_integer: '(?:0|[1-9](?:_?[0-9])*)'
+  decimal_fraction: '(?:(?:{{numeric_separator_digits}}?\.(?:{{numeric_separator_digits}}))|(?:{{numeric_separator_digits}}\.))'
+  binary_operator: '(?:==|!=|<=|>=|<<=|>>=|>>>=|<<|>>>|>>|&&|\|\||\?\?|\+=|-=|\*=|/=|~/=|%=|&=|\^=|\|=|\?\?=|=>|[-+*/%&|^~<>]=?)'
+  assignment_operator: '(?:=|\+=|-=|\*=|/=|~/=|%=|<<=|>>=|>>>=|&=|\^=|\|=|\?\?=)'
+  unary_word_operators: '(?:await|new|throw)'
+  control_statement_keywords: '(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|on|rethrow|return|switch|try|while|yield)'
+  import_keywords: '(?:import|export|part|library)'
+  declaration_start: '(?:abstract\s+|augment\s+|base\s+|final\s+|const\s+|sealed\s+|interface\s+|external\s+|late\s+|static\s+)*'
+  lookahead_type_params: '(?=\s*(?:<|\(|=>|\{|;|=|\?|:|,))'
+  qualified_identifier: '(?:{{identifier}}(?:\.{{identifier}})*)'
+  generic_clause: '(?:<[^(){};\n]*>)'
+  parameter_signature: '(?:\([^;\n]*\))'
+  type_ref: '(?:(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)(?:\s*\.\s*(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)*'
+
+contexts:
+  main:
+    - match: '^\s*(#!)'
+      captures:
+        1: punctuation.definition.comment.dart
+      push: shebang-body
+    - include: program
+
+  prototype:
+    - include: comments
+
+  program:
+    - include: whitespace
+    - include: directives
+    - include: declarations
+    - include: statements
+    - include: expressions
+    - include: punctuation
+
+  whitespace:
+    - match: '\s+'
+
+  comments:
+    - include: line-comments
+    - include: block-comments
+
+  line-comments:
+    - match: '///+'
+      scope: punctuation.definition.comment.dart
+      push: doc-line-comment-body
+    - match: '//+'
+      scope: punctuation.definition.comment.dart
+      push: line-comment-body
+
+  doc-line-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.line.documentation.dart
+    - match: $
+      pop: 1
+
+  line-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.line.double-slash.dart
+    - match: $
+      pop: 1
+
+  block-comments:
+    - match: '/\*\*'
+      scope: punctuation.definition.comment.begin.dart
+      push: doc-block-comment-body
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.dart
+      push: block-comment-body
+
+  doc-block-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.block.documentation.dart
+    - match: '/\*\*'
+      scope: punctuation.definition.comment.begin.dart
+      push: doc-block-comment-body
+    - match: '\*/'
+      scope: punctuation.definition.comment.end.dart
+      pop: 1
+
+  block-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.block.dart
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.dart
+      push: block-comment-body
+    - match: '\*/'
+      scope: punctuation.definition.comment.end.dart
+      pop: 1
+
+  shebang-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.line.shebang.dart
+    - match: '{{shebang_language}}'
+      scope: constant.language.shebang.dart
+    - match: $
+      pop: 1
+
+  directives:
+    - match: '(?=\bimport\b)'
+      push: import-directive
+    - match: '(?=\bexport\b)'
+      push: export-directive
+    - match: '(?=\bpart\b)'
+      push: part-directive
+    - match: '(?=\blibrary\b)'
+      push: library-directive
+
+  import-directive:
+    - meta_scope: meta.declaration.import.dart
+    - match: '\bimport\b'
+      scope: keyword.control.import.dart
+    - include: whitespace
+    - include: metadata
+    - include: strings
+    - match: '\bdeferred\b'
+      scope: keyword.control.import.dart
+    - match: '\bas\b'
+      scope: keyword.control.import.dart
+    - match: '\b(?:show|hide)\b'
+      scope: keyword.control.import.dart
+    - match: '{{identifier}}'
+      scope: variable.other.readwrite.dart
+    - include: punctuation-commas
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '$'
+      pop: 1
+
+  export-directive:
+    - meta_scope: meta.declaration.export.dart
+    - match: '\bexport\b'
+      scope: keyword.control.import.dart
+    - include: whitespace
+    - include: metadata
+    - include: strings
+    - match: '\b(?:show|hide)\b'
+      scope: keyword.control.import.dart
+    - match: '{{identifier}}'
+      scope: variable.other.readwrite.dart
+    - include: punctuation-commas
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '$'
+      pop: 1
+
+  part-directive:
+    - meta_scope: meta.declaration.import.dart
+    - match: '\bpart\b'
+      scope: keyword.control.import.dart
+    - include: whitespace
+    - include: metadata
+    - include: strings
+    - match: '\bof\b'
+      scope: keyword.control.import.dart
+    - match: '{{identifier}}'
+      scope: entity.name.namespace.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '$'
+      pop: 1
+
+  library-directive:
+    - meta_scope: meta.declaration.namespace.dart
+    - match: '\blibrary\b'
+      scope: keyword.control.import.dart
+    - include: whitespace
+    - include: metadata
+    - match: '{{identifier}}'
+      scope: entity.name.namespace.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '$'
+      pop: 1
+
+  declarations:
+    - include: metadata
+    - match: '(?={{declaration_start}}\bclass\b)'
+      push: class-declaration
+    - match: '(?={{declaration_start}}\bmixin\b)'
+      push: mixin-declaration
+    - match: '(?={{declaration_start}}\bextension\b)'
+      push: extension-declaration
+    - match: '(?={{declaration_start}}\benum\b)'
+      push: enum-declaration
+    - match: '(?={{declaration_start}}\btypedef\b)'
+      push: typedef-declaration
+    - match: '(?=\b(?:external\s+)?(?:const\s+)?factory\s+{{type_ref}}(?:\.{{plain_identifier}})?\s*{{parameter_signature}}\s*(?:=>|\{|;|:))'
+      push: factory-constructor-declaration
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?(?:get|set)\s+{{plain_identifier}}(?:\s*{{parameter_signature}})?\s*(?:=>|\{|;))'
+      push: accessor-declaration
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*{{parameter_signature}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
+      push: function-declaration
+    - match: '(?=\b{{plain_identifier}}(?:{{generic_clause}})?\s*{{parameter_signature}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{))'
+      push: function-declaration
+
+  metadata:
+    - match: '@'
+      scope: punctuation.definition.annotation.dart
+      push: annotation-body
+
+  annotation-body:
+    - meta_scope: meta.annotation.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: variable.annotation.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - match: '(?=\()'
+      push: arguments
+    - match: '(?=[^\w.$(]|$)'
+      pop: 1
+
+  class-declaration:
+    - meta_scope: meta.class.dart
+    - include: declaration-prefix
+    - match: '\bclass\b'
+      scope: keyword.declaration.class.dart
+      set: class-name
+    - match: '(?=\S)'
+      pop: 1
+
+  class-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.class.dart
+      set: class-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  class-after-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '(?=<)'
+      push: type-parameters
+    - match: '\bextends\b'
+      scope: keyword.declaration.class.inheritance.dart
+      push: inherited-type-reference
+    - match: '\b(?:with|implements)\b'
+      scope: keyword.declaration.class.inheritance.dart
+      push: inherited-type-reference-list
+    - include: type-parameters-trigger
+    - include: types
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      set: block-body
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '(?=\S)'
+      pop: 1
+
+  mixin-declaration:
+    - meta_scope: meta.class.dart
+    - include: declaration-prefix
+    - match: '\bmixin\b'
+      scope: keyword.declaration.class.dart
+      set: mixin-name
+    - match: '(?=\S)'
+      pop: 1
+
+  mixin-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.class.dart
+      set: mixin-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  mixin-after-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '(?=<)'
+      push: type-parameters
+    - match: '\b(?:on|implements)\b'
+      scope: keyword.declaration.class.inheritance.dart
+      push: inherited-type-reference-list
+    - include: type-parameters-trigger
+    - include: types
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      set: block-body
+    - match: '(?=\S)'
+      pop: 1
+
+  extension-declaration:
+    - meta_scope: meta.class.dart
+    - include: declaration-prefix
+    - match: '\bextension\b'
+      scope: keyword.declaration.class.dart
+      set: extension-name
+    - match: '(?=\S)'
+      pop: 1
+
+  extension-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '\bon\b'
+      scope: keyword.declaration.class.inheritance.dart
+      set: extension-after-on
+    - match: '{{identifier}}'
+      scope: entity.name.class.dart
+      set: extension-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  extension-after-name:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - match: '(?=<)'
+      push: type-parameters
+    - match: '\bon\b'
+      scope: keyword.declaration.class.inheritance.dart
+      set: extension-after-on
+    - match: '(?=\{)'
+      set: extension-after-on
+    - match: '(?=\S)'
+      pop: 1
+
+  extension-after-on:
+    - meta_scope: meta.class.dart
+    - include: whitespace
+    - include: type-parameters-trigger
+    - include: types
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      set: block-body
+    - match: '(?=\S)'
+      pop: 1
+
+  enum-declaration:
+    - meta_scope: meta.enum.dart
+    - include: declaration-prefix
+    - match: '\benum\b'
+      scope: keyword.declaration.class.dart
+      set: enum-name
+    - match: '(?=\S)'
+      pop: 1
+
+  enum-name:
+    - meta_scope: meta.enum.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.enum.dart
+      set: enum-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  enum-after-name:
+    - meta_scope: meta.enum.dart
+    - include: whitespace
+    - match: '\b(?:with|implements)\b'
+      scope: keyword.declaration.class.inheritance.dart
+      push: inherited-type-reference-list
+    - include: type-parameters-trigger
+    - include: types
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      set: enum-entry-list
+    - match: '(?=\S)'
+      pop: 1
+
+  enum-entry-list:
+    - meta_scope: meta.enum.body.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - match: '(?=\b(?:var|final|const|late|static|abstract|augment|base|covariant|external|interface|required|sealed|factory|get|set|operator|class|mixin|extension|enum|typedef)\b)'
+      set: enum-body
+    - match: '{{identifier}}'
+      scope: entity.name.constant.dart
+      set: enum-entry-after-name
+    - match: ';'
+      scope: punctuation.terminator.dart
+      set: enum-body
+    - match: '(?=\S)'
+      set: enum-body
+
+  enum-entry-after-name:
+    - meta_scope: meta.enum.body.dart
+    - include: whitespace
+    - match: '(?=\()'
+      push: arguments
+    - match: '(?=\{)'
+      push: brace-body
+    - match: ','
+      scope: punctuation.separator.comma.dart
+      set: enum-entry-list
+    - match: ';'
+      scope: punctuation.terminator.dart
+      set: enum-body
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - match: '(?=\S)'
+      set: enum-body
+
+  enum-body:
+    - meta_scope: meta.enum.body.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - include: declarations
+    - include: variable-declarations
+    - include: control-keywords
+    - include: punctuation-commas
+    - match: ';'
+      scope: punctuation.terminator.dart
+    - include: expressions
+    - include: punctuation
+
+  typedef-declaration:
+    - meta_scope: meta.declaration.typealias.dart
+    - include: declaration-prefix
+    - match: '\btypedef\b'
+      scope: keyword.declaration.type.dart
+      set: typedef-name
+    - match: '(?=\S)'
+      pop: 1
+
+  factory-constructor-declaration:
+    - meta_scope: meta.function.constructor.dart
+    - include: declaration-prefix
+    - match: '\bconst\b'
+      scope: storage.modifier.dart
+    - match: '\bfactory\b'
+      scope: keyword.declaration.function.dart
+    - include: whitespace
+    - include: constructor-name-path
+    - match: '(?=\()'
+      set: expect-constructor-parameters
+    - match: '(?=\S)'
+      pop: 1
+
+  constructor-name-path:
+    - match: '\b{{type_identifier}}\b'
+      scope: entity.name.class.dart
+    - match: '\b{{plain_identifier}}\b'
+      scope: entity.name.function.constructor.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - include: type-parameters-trigger
+    - include: whitespace
+
+  expect-constructor-parameters:
+    - include: whitespace
+    - match: '(?=\()'
+      set: [function-after-signature, parameters]
+    - match: '(?=\S)'
+      pop: 1
+
+  typedef-name:
+    - meta_scope: meta.declaration.typealias.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.type.dart
+      set: typedef-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  typedef-after-name:
+    - meta_scope: meta.declaration.typealias.dart
+    - include: whitespace
+    - match: '(?=<)'
+      push: type-parameters
+    - match: '='
+      scope: keyword.operator.assignment.dart
+    - include: type-parameters-trigger
+    - include: types
+    - match: '(?=\()'
+      push: parameter-type-list
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '(?=\S)'
+      pop: 1
+
+  accessor-declaration:
+    - meta_scope: meta.function.accessor.dart
+    - include: declaration-prefix
+    - include: types
+    - match: '\bget\b'
+      scope: keyword.declaration.function.dart
+      set: accessor-name
+    - match: '\bset\b'
+      scope: keyword.declaration.function.dart
+      set: accessor-name-and-params
+    - match: '(?=\S)'
+      pop: 1
+
+  accessor-name:
+    - meta_scope: meta.function.accessor.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.function.dart
+      set: function-after-signature
+    - match: '(?=\S)'
+      pop: 1
+
+  accessor-name-and-params:
+    - meta_scope: meta.function.accessor.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: entity.name.function.dart
+      set: expect-parameters
+    - match: '(?=\S)'
+      pop: 1
+
+  function-declaration:
+    - meta_scope: meta.function.dart
+    - include: declaration-prefix
+    - include: types
+    - match: '{{identifier}}'
+      scope: entity.name.function.dart
+      set: function-after-name
+    - match: '(?=\S)'
+      pop: 1
+
+  function-after-name:
+    - meta_scope: meta.function.dart
+    - include: whitespace
+    - match: '(?=<)'
+      push: type-parameters
+    - match: '(?=\()'
+      set: expect-parameters
+    - match: '(?=\S)'
+      pop: 1
+
+  expect-parameters:
+    - include: whitespace
+    - match: '(?=\()'
+      set: [function-after-signature, parameters]
+    - match: '(?=\S)'
+      pop: 1
+
+  function-after-signature:
+    - include: whitespace
+    - match: '\b(?:async|sync)\b'
+      scope: storage.modifier.dart
+    - match: '\*'
+      scope: keyword.operator.arithmetic.dart
+    - match: '=>'
+      scope: keyword.operator.arrow.dart
+      set: expression-until-terminator
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      set: block-body
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '(?=\S)'
+      pop: 1
+
+  declaration-prefix:
+    - match: '\b{{storage_modifiers}}\b'
+      scope: storage.modifier.dart
+
+  block-body:
+    - meta_scope: meta.block.dart
+    - include: whitespace
+    - include: comments
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: brace-body
+    - include: declarations
+    - include: statements
+    - include: expressions
+    - include: punctuation-common
+
+  brace-body:
+    - include: whitespace
+    - include: comments
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: brace-body
+    - include: declarations
+    - include: statements
+    - include: expressions
+    - include: punctuation-common
+
+  statements:
+    - include: labels
+    - include: named-arguments
+    - include: control-keywords
+    - include: variable-declarations
+
+  control-keywords:
+    - match: '\b(?:if|else|switch|case|default|for|while|do|try|catch|finally|break|continue|return|rethrow|throw|yield|assert|on|in)\b'
+      scope: keyword.control.dart
+
+  variable-declarations:
+    - match: '\b(?:var|final|const|late)\b'
+      scope: storage.modifier.dart
+    - match: '\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b'
+      scope: storage.type.dart
+
+  labels:
+    - match: '(\b{{plain_identifier}}\b)(\s*:)(?!:)(?=\s*(?:for|while|do|switch|if|try|\{|break\b|continue\b))'
+      captures:
+        1: entity.name.label.dart
+        2: punctuation.separator.colon.dart
+
+  expressions:
+    - include: metadata
+    - include: strings
+    - include: numbers
+    - include: symbols
+    - include: booleans-and-null
+    - include: keyword-operators-and-controls
+    - include: anonymous-variable
+    - include: named-arguments
+    - include: constructors-and-types
+    - include: operators
+    - include: parameters-and-identifiers
+    - include: punctuation
+
+  keyword-operators-and-controls:
+    - match: '\b(?:switch|throw|return|rethrow|yield|await|if|else|for|while|do|try|catch|finally|break|continue|assert|case|default|in|on)\b'
+      scope: keyword.control.dart
+    - match: '\b(?:is|as|new)\b'
+      scope: keyword.operator.word.dart
+
+  anonymous-variable:
+    - match: '\b_\b'
+      scope: variable.language.anonymous.dart
+
+  named-arguments:
+    - match: '(\b{{plain_identifier}}\b)(\s*:)(?=\s*[^:])'
+      captures:
+        1: variable.parameter.dart
+        2: punctuation.separator.colon.dart
+
+  expression-until-terminator:
+    - meta_scope: meta.expression.dart
+    - include: whitespace
+    - include: comments
+    - include: expressions
+    - match: ';'
+      scope: punctuation.terminator.dart
+      pop: 1
+    - match: '$'
+      pop: 1
+
+  strings:
+    - include: raw-triple-double-string
+    - include: raw-triple-single-string
+    - include: raw-double-string
+    - include: raw-single-string
+    - include: triple-double-string
+    - include: triple-single-string
+    - include: double-string
+    - include: single-string
+
+  raw-single-string:
+    - match: "r'"
+      scope: storage.type.string.dart punctuation.definition.string.begin.dart
+      push: raw-single-string-body
+
+  raw-single-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.single.dart
+    - match: "'"
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  raw-double-string:
+    - match: 'r"'
+      scope: storage.type.string.dart punctuation.definition.string.begin.dart
+      push: raw-double-string-body
+
+  raw-double-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.dart
+    - match: '"'
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  raw-triple-single-string:
+    - match: "r'''"
+      scope: storage.type.string.dart punctuation.definition.string.begin.dart
+      push: raw-triple-single-string-body
+
+  raw-triple-single-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.triple.single.dart
+    - match: "'''"
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  raw-triple-double-string:
+    - match: 'r"""'
+      scope: storage.type.string.dart punctuation.definition.string.begin.dart
+      push: raw-triple-double-string-body
+
+  raw-triple-double-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.triple.double.dart
+    - match: '"""'
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  single-string:
+    - match: "'"
+      scope: punctuation.definition.string.begin.dart
+      push: single-string-body
+
+  single-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.single.dart
+    - include: string-escapes
+    - include: string-interpolation
+    - match: "'"
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  double-string:
+    - match: '"'
+      scope: punctuation.definition.string.begin.dart
+      push: double-string-body
+
+  double-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.dart
+    - include: string-escapes
+    - include: string-interpolation
+    - match: '"'
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  triple-single-string:
+    - match: "'''"
+      scope: punctuation.definition.string.begin.dart
+      push: triple-single-string-body
+
+  triple-single-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.triple.single.dart
+    - include: string-escapes
+    - include: string-interpolation
+    - match: "'''"
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  triple-double-string:
+    - match: '"""'
+      scope: punctuation.definition.string.begin.dart
+      push: triple-double-string-body
+
+  triple-double-string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.triple.double.dart
+    - include: string-escapes
+    - include: string-interpolation
+    - match: '"""'
+      scope: punctuation.definition.string.end.dart
+      pop: 1
+
+  string-escapes:
+    - match: "\\\\(?:[nrfbtv\\\\$'\"`]|x{{hex_digit}}{2}|u{{hex_digit}}{4}|u\\{(?:{{hex_digit}}{1,6})\\})"
+      scope: constant.character.escape.dart
+
+  string-interpolation:
+    - match: '\${{identifier}}'
+      scope: meta.interpolation.dart variable.interpolation.dart
+    - match: '\${'
+      scope: punctuation.section.interpolation.begin.dart
+      push: string-interpolation-expression
+
+  string-interpolation-expression:
+    - meta_include_prototype: false
+    - clear_scopes: true
+    - meta_scope: meta.interpolation.dart source.dart.embedded
+    - match: '\}'
+      scope: punctuation.section.interpolation.end.dart
+      pop: 1
+    - include: comments
+    - include: whitespace
+    - include: expressions
+
+  numbers:
+    - match: '\b0[xX]{{numeric_separator_hex}}\b'
+      scope: constant.numeric.integer.hexadecimal.dart
+    - match: '(?:(?<=\W)|^){{decimal_fraction}}(?:{{exponent}})?\b'
+      scope: constant.numeric.float.dart
+    - match: '\b{{decimal_integer}}{{exponent}}\b'
+      scope: constant.numeric.float.dart
+    - match: '\b{{decimal_integer}}\b'
+      scope: constant.numeric.integer.decimal.dart
+
+  booleans-and-null:
+    - match: '\b(?:true|false|null)\b'
+      scope: constant.language.dart
+    - match: '\b(?:this|super)\b'
+      scope: variable.language.dart
+
+  symbols:
+    - match: '#{{identifier}}(?:\.{{identifier}})*'
+      scope: constant.other.symbol.dart
+    - match: '#(?:\[\]=|\[\]|==|~|[+\-*/%&|^<>]+|void)'
+      scope: constant.other.symbol.dart
+
+  constructors-and-types:
+    - include: collection-type-arguments-trigger
+    - include: type-parameters-trigger
+    - include: types
+    - match: '(\b{{type_identifier}}\b)(\s*)(\.)(\s*)(\b{{identifier}}\b)(\s*)(?=\()'
+      captures:
+        1: support.type.dart
+        3: punctuation.accessor.dart
+        5: variable.function.dart
+    - match: '(\b{{identifier}}\b)(\s*)(?=\()'
+      captures:
+        1: variable.function.dart
+    - match: '(\b{{identifier}}\b)(\s*)(\.)(\s*)(\b{{identifier}}\b)(\s*)(?=\()'
+      captures:
+        1: variable.other.dart
+        3: punctuation.accessor.dart
+        5: variable.function.dart
+
+  collection-type-arguments-trigger:
+    - match: '(?=<\s*(?:{{type_identifier}}|{{builtin_types}})\b)'
+      push: type-arguments
+
+  type-parameters-trigger:
+    - match: '(?=\b(?:{{type_identifier}}|{{builtin_types}})\b\s*<)'
+      push: typed-identifier-with-arguments
+
+  typed-identifier-with-arguments:
+    - match: '{{builtin_types}}'
+      scope: storage.type.dart
+      set: type-arguments-after-identifier
+    - match: '{{type_identifier}}'
+      scope: support.type.dart
+      set: type-arguments-after-identifier
+    - match: ''
+      pop: 1
+
+  type-arguments-after-identifier:
+    - include: whitespace
+    - match: '(?=<)'
+      set: [post-type-arguments, type-arguments]
+    - match: ''
+      pop: 1
+
+  post-type-arguments:
+    - include: whitespace
+    - match: '(?=\.)'
+      push: qualified-type-tail
+    - match: ''
+      pop: 1
+
+  qualified-type-tail:
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - match: '{{identifier}}(?=\s*\()'
+      scope: variable.function.dart
+      set: post-type-arguments
+    - match: '{{identifier}}'
+      scope: support.type.dart
+      set: post-type-arguments
+    - match: ''
+      pop: 1
+
+  type-parameters:
+    - meta_scope: meta.generic.dart
+    - match: '<'
+      scope: punctuation.definition.generic.begin.dart
+      set: type-parameter-list
+
+  type-parameter-list:
+    - meta_scope: meta.generic.dart
+    - include: whitespace
+    - include: metadata
+    - match: '{{identifier}}'
+      scope: entity.name.type.parameter.dart
+      set: type-parameter-after-name
+    - match: '>'
+      scope: punctuation.definition.generic.end.dart
+      pop: 1
+    - match: '(?=\{|\(|=|;|\)|=>|:)'
+      pop: 1
+
+  type-parameter-after-name:
+    - meta_scope: meta.generic.dart
+    - include: whitespace
+    - match: '\bextends\b'
+      scope: keyword.declaration.class.inheritance.dart
+      set: type-parameter-bound
+    - match: ','
+      scope: punctuation.separator.comma.dart
+      set: type-parameter-list
+    - match: '>'
+      scope: punctuation.definition.generic.end.dart
+      pop: 1
+    - match: '(?=\{|\(|=|;|\)|=>|:)'
+      pop: 1
+
+  type-parameter-bound:
+    - meta_scope: meta.generic.dart
+    - include: whitespace
+    - include: metadata
+    - include: type-parameters-trigger
+    - include: types
+    - match: ','
+      scope: punctuation.separator.comma.dart
+      set: type-parameter-list
+    - match: '>'
+      scope: punctuation.definition.generic.end.dart
+      pop: 1
+    - match: '(?=\{|\(|=|;|\)|=>|:)'
+      pop: 1
+
+  type-arguments:
+    - meta_scope: meta.generic.dart
+    - match: '<'
+      scope: punctuation.definition.generic.begin.dart
+    - include: whitespace
+    - include: type-parameters-trigger
+    - include: types
+    - include: punctuation-commas
+    - match: '>'
+      scope: punctuation.definition.generic.end.dart
+      pop: 1
+    - match: '(?=\{|\(|=|;|\)|=>|:)' 
+      pop: 1
+
+  inherited-type-reference:
+    - include: whitespace
+    - include: inherited-type-name
+    - match: '(?=<)'
+      push: type-arguments
+    - match: ''
+      pop: 1
+
+  inherited-type-reference-list:
+    - include: whitespace
+    - include: inherited-type-name
+    - match: '(?=<)'
+      push: type-arguments
+    - match: ','
+      scope: punctuation.separator.comma.dart
+    - match: '(?=\{|\bwith\b|\bimplements\b|\bon\b|;|$)'
+      pop: 1
+    - match: ''
+      pop: 1
+
+  inherited-type-name:
+    - match: '\b{{builtin_types}}\b'
+      scope: entity.other.inherited-class.dart
+    - match: '\b{{type_identifier}}\b'
+      scope: entity.other.inherited-class.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+
+  types:
+    - match: '\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b'
+      scope: storage.type.dart
+    - match: '\b{{type_identifier}}\b'
+      scope: support.type.dart
+    - match: '\b{{identifier}}\b(?=\s*[?.]?\s*Function\b)'
+      scope: support.type.dart
+    - match: '\bFunction\b'
+      scope: storage.type.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+
+  parameters-and-identifiers:
+    - match: '\b{{identifier}}\b(?=\s*:)' 
+      scope: variable.parameter.dart
+    - match: '\b{{identifier}}\b(?=\s*[,)\]}=])'
+      scope: variable.other.readwrite.dart
+    - match: '\b{{identifier}}\b'
+      scope: variable.other.readwrite.dart
+
+  parameters:
+    - meta_scope: meta.function.parameters.dart
+    - match: '\('
+      scope: punctuation.section.parameters.begin.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\)'
+      scope: punctuation.section.parameters.end.dart
+      pop: 1
+    - match: '\['
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\]'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\{'
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\}'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\brequired\b'
+      scope: storage.modifier.dart
+    - match: '\bthis\b'
+      scope: variable.language.dart
+    - match: '{{identifier}}(?=\s*\.)'
+      scope: variable.language.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+    - match: '(\bFunction\b)(\s*)(\()'
+      captures:
+        1: storage.type.dart
+        3: punctuation.section.parameters.begin.dart
+      push: function-type-parameter-list
+    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
+      scope: storage.type.dart
+    - match: '\bFunction\b'
+      scope: storage.type.dart
+    - include: type-parameters-trigger
+    - include: types
+    - match: '{{identifier}}(?=\s*\()'
+      scope: variable.parameter.dart
+      set: parameter-function-tail
+    - match: '{{identifier}}'
+      scope: variable.parameter.dart
+    - match: '[:=]'
+      scope: keyword.operator.assignment.dart
+    - include: punctuation-commas
+    - include: expressions
+
+  parameter-type-list:
+    - meta_scope: meta.function.parameters.dart
+    - match: '\('
+      scope: punctuation.section.parameters.begin.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\)'
+      scope: punctuation.section.parameters.end.dart
+      pop: 1
+    - match: '\['
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\]'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\{'
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\}'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\brequired\b'
+      scope: storage.modifier.dart
+    - match: '(\bFunction\b)(\s*)(\()'
+      captures:
+        1: storage.type.dart
+        3: punctuation.section.parameters.begin.dart
+      push: function-type-parameter-list
+    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
+      scope: storage.type.dart
+    - match: '\bFunction\b'
+      scope: storage.type.dart
+    - include: type-parameters-trigger
+    - include: types
+    - match: '{{identifier}}(?=\s*\()'
+      scope: variable.parameter.dart
+      set: parameter-function-tail
+    - match: '{{identifier}}'
+      scope: variable.parameter.dart
+    - include: punctuation-commas
+
+  parameter-function-tail:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - match: '(?=\()'
+      push: parameter-type-list
+    - match: ''
+      pop: 1
+
+  function-type-parameter-list:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\)'
+      scope: punctuation.section.parameters.end.dart
+      set: function-type-after-parameter-list
+    - match: '\['
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\]'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\{'
+      scope: punctuation.section.parameters.begin.dart
+    - match: '\}'
+      scope: punctuation.section.parameters.end.dart
+    - match: '\brequired\b'
+      scope: storage.modifier.dart
+    - match: '(\bFunction\b)(\s*)(\()'
+      captures:
+        1: storage.type.dart
+        3: punctuation.section.parameters.begin.dart
+      push: function-type-parameter-list
+    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
+      scope: storage.type.dart
+    - match: '\bFunction\b'
+      scope: storage.type.dart
+    - include: type-parameters-trigger
+    - include: types
+    - match: '{{identifier}}(?=\s*\()'
+      scope: variable.parameter.dart
+      set: parameter-function-tail
+    - match: '{{identifier}}'
+      scope: variable.parameter.dart
+    - include: punctuation-commas
+
+  function-type-after-parameter-list:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - match: '{{identifier}}'
+      scope: variable.parameter.dart
+      pop: 1
+    - match: ''
+      pop: 1
+
+  arguments:
+    - meta_scope: meta.function-call.arguments.dart
+    - match: '\('
+      scope: punctuation.section.arguments.begin.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\)'
+      scope: punctuation.section.arguments.end.dart
+      pop: 1
+    - include: expressions
+    - include: punctuation-commas
+
+  operators:
+    - match: '\b(?:is|as)\b'
+      scope: keyword.operator.word.dart
+    - match: '\bawait\b'
+      scope: keyword.control.dart
+    - match: '\bnew\b'
+      scope: keyword.operator.word.dart
+    - match: '\b(?:async|sync|of|show|hide|deferred)\b'
+      scope: storage.modifier.dart
+    - match: '\.\.\.\??'
+      scope: keyword.operator.spread.dart
+    - match: '\?\.\.'
+      scope: punctuation.accessor.dart
+    - match: '\?\.'
+      scope: punctuation.accessor.dart
+    - match: '{{assignment_operator}}'
+      scope: keyword.operator.assignment.dart
+    - match: '\?\?'
+      scope: keyword.operator.null-coalescing.dart
+    - match: '\?'
+      scope: keyword.operator.conditional.dart
+    - match: ':'
+      scope: punctuation.separator.colon.dart
+    - match: '=>'
+      scope: keyword.operator.arrow.dart
+    - match: '\.\.'
+      scope: punctuation.accessor.dart
+    - match: '(?:===|==|!=|<=|>=|<|>)'
+      scope: keyword.operator.comparison.dart
+    - match: '(?:&&|\|\||!)'
+      scope: keyword.operator.logical.dart
+    - match: '(?:<<|>>>|>>|&|\||\^|~)'
+      scope: keyword.operator.bitwise.dart
+    - match: '(?:\+\+|--)'
+      scope: keyword.operator.increment-decrement.dart
+    - match: '(?:\+|-|\*|/|~/|%)'
+      scope: keyword.operator.arithmetic.dart
+    - match: '='
+      scope: keyword.operator.assignment.dart
+
+  punctuation:
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+    - match: '\)'
+      scope: punctuation.section.group.end.dart
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+    - match: '\]'
+      scope: punctuation.section.brackets.end.dart
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+    - include: punctuation-common
+
+  punctuation-common:
+    - include: punctuation-commas
+    - match: ';'
+      scope: punctuation.terminator.dart
+    - match: '\.'
+      scope: punctuation.accessor.dart
+
+  punctuation-commas:
+    - match: ','
+      scope: punctuation.separator.comma.dart

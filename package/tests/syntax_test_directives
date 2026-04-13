@@ -1,0 +1,44 @@
+// SYNTAX TEST "Dart.sublime-syntax"
+
+#!/usr/bin/env dart
+// <- punctuation.definition.comment.dart
+ // <- punctuation.definition.comment.dart
+//             ^^^^ comment.line.shebang.dart constant.language.shebang.dart
+
+library foo.bar;
+// <- meta.declaration.namespace.dart keyword.control.import.dart
+ // <- meta.declaration.namespace.dart keyword.control.import.dart
+//^^^^^ meta.declaration.namespace.dart keyword.control.import.dart
+//      ^^^ meta.declaration.namespace.dart entity.name.namespace.dart
+//         ^ meta.declaration.namespace.dart punctuation.accessor.dart
+//          ^^^ meta.declaration.namespace.dart entity.name.namespace.dart
+//             ^ meta.declaration.namespace.dart punctuation.terminator.dart
+
+import 'dart:math' as math;
+// <- meta.declaration.import.dart keyword.control.import.dart
+ // <- meta.declaration.import.dart keyword.control.import.dart
+//^^^^ meta.declaration.import.dart keyword.control.import.dart
+//     ^^^^^^^^^^^ meta.declaration.import.dart string.quoted.single.dart
+//     ^ meta.declaration.import.dart punctuation.definition.string.begin.dart
+//               ^ meta.declaration.import.dart punctuation.definition.string.end.dart
+//                 ^^ meta.declaration.import.dart keyword.control.import.dart
+//                    ^^^^ meta.declaration.import.dart variable.other.readwrite.dart
+//                        ^ meta.declaration.import.dart punctuation.terminator.dart
+
+export 'src/api.dart' show Api, Client;
+// <- meta.declaration.export.dart keyword.control.import.dart
+ // <- meta.declaration.export.dart keyword.control.import.dart
+//^^^^ meta.declaration.export.dart keyword.control.import.dart
+//     ^^^^^^^^^^^^^^ meta.declaration.export.dart string.quoted.single.dart
+//                    ^^^^ meta.declaration.export.dart keyword.control.import.dart
+//                         ^^^ meta.declaration.export.dart variable.other.readwrite.dart
+//                              ^^^^^^ meta.declaration.export.dart variable.other.readwrite.dart
+//                            ^ meta.declaration.export.dart punctuation.separator.comma.dart
+
+part of foo.bar;
+// <- meta.declaration.import.dart keyword.control.import.dart
+ // <- meta.declaration.import.dart keyword.control.import.dart
+//^^ meta.declaration.import.dart keyword.control.import.dart
+//   ^^ meta.declaration.import.dart keyword.control.import.dart
+//      ^^^ meta.declaration.import.dart entity.name.namespace.dart
+//          ^^^ meta.declaration.import.dart entity.name.namespace.dart

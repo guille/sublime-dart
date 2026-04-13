@@ -1,0 +1,152 @@
+syntax: "Dart.sublime-syntax"
+comment_char: "//"
+tests:
+  - line: "class Point<T extends num> extends Shape with Mixin implements Drawable {}"
+    assertions:
+      - span: "class"
+        scopes: [meta.class.dart, keyword.declaration.class.dart]
+      - span: "Point"
+        scopes: [meta.class.dart, entity.name.class.dart]
+      - span: "<"
+        scopes: [meta.class.dart, meta.generic.dart, punctuation.definition.generic.begin.dart]
+      - span: "T"
+        scopes: [meta.class.dart, meta.generic.dart, entity.name.type.parameter.dart]
+      - span: "extends"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+        nth: 0
+      - span: "num"
+        scopes: [meta.class.dart, meta.generic.dart, storage.type.dart]
+      - span: "Shape"
+        scopes: [meta.class.dart, entity.other.inherited-class.dart]
+      - span: "with"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+      - span: "Mixin"
+        scopes: [meta.class.dart, entity.other.inherited-class.dart]
+      - span: "implements"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+      - span: "Drawable"
+        scopes: [meta.class.dart, entity.other.inherited-class.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "mixin Logger on Service implements Disposable {}"
+    assertions:
+      - span: "mixin"
+        scopes: [meta.class.dart, keyword.declaration.class.dart]
+      - span: "Logger"
+        scopes: [meta.class.dart, entity.name.class.dart]
+      - span: "on"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+      - span: "Service"
+        scopes: [meta.class.dart, entity.other.inherited-class.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "extension FancyList<T> on List<T> {}"
+    assertions:
+      - span: "extension"
+        scopes: [meta.class.dart, keyword.declaration.class.dart]
+      - span: "FancyList"
+        scopes: [meta.class.dart, entity.name.class.dart]
+      - span: "T"
+        scopes: [meta.class.dart, meta.generic.dart, entity.name.type.parameter.dart]
+      - span: "on"
+        scopes: [meta.class.dart, keyword.declaration.class.inheritance.dart]
+        nth: 1
+      - span: "List"
+        scopes: [meta.class.dart, support.type.dart]
+        nth: 1
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "enum Color { red, blue }"
+    assertions:
+      - span: "enum"
+        scopes: [meta.enum.dart, keyword.declaration.class.dart]
+      - span: "Color"
+        scopes: [meta.enum.dart, entity.name.enum.dart]
+      - span: "red"
+        scopes: [meta.enum.body.dart, entity.name.constant.dart]
+      - span: "blue"
+        scopes: [meta.enum.body.dart, entity.name.constant.dart]
+      - span: "}"
+        scopes: [punctuation.section.block.end.dart]
+
+  - line: "typedef Mapper<T> = T Function(String value);"
+    assertions:
+      - span: "typedef"
+        scopes: [meta.declaration.typealias.dart, keyword.declaration.type.dart]
+      - span: "Mapper"
+        scopes: [meta.declaration.typealias.dart, entity.name.type.dart]
+      - span: "T"
+        scopes: [meta.declaration.typealias.dart, meta.generic.dart, entity.name.type.parameter.dart]
+      - span: "="
+        scopes: [meta.declaration.typealias.dart, keyword.operator.assignment.dart]
+      - span: "Function"
+        scopes: [meta.declaration.typealias.dart, storage.type.dart]
+      - span: "String"
+        scopes: [meta.declaration.typealias.dart, storage.type.dart]
+
+  - line: "@deprecated"
+    assertions:
+      - span: "@"
+        scopes: [punctuation.definition.annotation.dart]
+      - span: "deprecated"
+        scopes: [meta.annotation.dart, variable.annotation.dart]
+
+  - line: "@JsonKey(name: 'id')"
+    assertions:
+      - span: "JsonKey"
+        scopes: [meta.annotation.dart, variable.annotation.dart]
+      - span: "("
+        scopes: [meta.function-call.arguments.dart, punctuation.section.arguments.begin.dart]
+      - span: "name"
+        scopes: [meta.function-call.arguments.dart, variable.parameter.dart]
+      - span: "'id'"
+        scopes: [meta.function-call.arguments.dart, string.quoted.single.dart]
+
+  - line: "int parse(String value, {required int radix = 10}) => 0;"
+    assertions:
+      - span: "int"
+        scopes: [meta.function.dart, storage.type.dart]
+        nth: 0
+      - span: "parse"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "("
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "value"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "required"
+        scopes: [meta.function.parameters.dart, storage.modifier.dart]
+      - span: "radix"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "10"
+        scopes: [meta.function.parameters.dart, constant.numeric.integer.decimal.dart]
+      - span: "=>"
+        scopes: [keyword.operator.arrow.dart]
+
+  - line: "String get name => _name;"
+    assertions:
+      - span: "String"
+        scopes: [meta.function.accessor.dart, storage.type.dart]
+      - span: "get"
+        scopes: [meta.function.accessor.dart, keyword.declaration.function.dart]
+      - span: "name"
+        scopes: [meta.function.accessor.dart, entity.name.function.dart]
+      - span: "=>"
+        scopes: [keyword.operator.arrow.dart]
+
+  - line: "set value(int next) {}"
+    assertions:
+      - span: "set"
+        scopes: [meta.function.accessor.dart, keyword.declaration.function.dart]
+      - span: "value"
+        scopes: [meta.function.accessor.dart, entity.name.function.dart]
+      - span: "int"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "next"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]

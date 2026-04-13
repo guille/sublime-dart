@@ -1,0 +1,108 @@
+syntax: "Dart.sublime-syntax"
+comment_char: "//"
+tests:
+  - line: "items?..add(1)..clear();"
+    assertions:
+      - span: "items"
+        scopes: [variable.other.readwrite.dart]
+      - span: "?.."
+        scopes: [punctuation.accessor.dart]
+      - span: "add"
+        scopes: [variable.function.dart]
+      - span: "1"
+        scopes: [constant.numeric.integer.decimal.dart]
+      - span: ".."
+        scopes: [punctuation.accessor.dart]
+        nth: 1
+      - span: "clear"
+        scopes: [variable.function.dart]
+
+  - line: "value = condition ? left : right;"
+    assertions:
+      - span: "value"
+        scopes: [variable.other.readwrite.dart]
+      - span: "="
+        scopes: [keyword.operator.assignment.dart]
+      - span: "?"
+        scopes: [keyword.operator.conditional.dart]
+      - span: ":"
+        scopes: [punctuation.separator.colon.dart]
+
+  - line: "result ??= other as String;"
+    assertions:
+      - span: "??="
+        scopes: [keyword.operator.assignment.dart]
+      - span: "as"
+        scopes: [keyword.operator.word.dart]
+      - span: "String"
+        scopes: [storage.type.dart]
+
+  - line: "flag = value is! int && !done;"
+    assertions:
+      - span: "is"
+        scopes: [keyword.operator.word.dart]
+      - span: "!"
+        scopes: [keyword.operator.logical.dart]
+        nth: 0
+      - span: "int"
+        scopes: [storage.type.dart]
+      - span: "&&"
+        scopes: [keyword.operator.logical.dart]
+      - span: "!"
+        scopes: [keyword.operator.logical.dart]
+        nth: 1
+
+  - line: "final data = <String, List<int>>{};"
+    assertions:
+      - span: "String"
+        scopes: [meta.generic.dart, storage.type.dart]
+      - span: "List"
+        scopes: [meta.generic.dart, support.type.dart]
+      - span: "int"
+        scopes: [meta.generic.dart, storage.type.dart]
+      - span: "{"
+        scopes: [punctuation.section.block.begin.dart]
+      - span: "}"
+        scopes: [punctuation.section.block.end.dart]
+
+  - line: "final callback = Mapper<int>.from(source);"
+    assertions:
+      - span: "Mapper"
+        scopes: [support.type.dart]
+      - span: "int"
+        scopes: [meta.generic.dart, storage.type.dart]
+      - span: "."
+        scopes: [punctuation.accessor.dart]
+      - span: "from"
+        scopes: [variable.function.dart]
+
+  - line: "label: while (true) break label;"
+    assertions:
+      - span: "label"
+        scopes: [entity.name.label.dart]
+        nth: 0
+      - span: ":"
+        scopes: [punctuation.separator.colon.dart]
+      - span: "while"
+        scopes: [keyword.control.dart]
+      - span: "true"
+        scopes: [constant.language.dart]
+      - span: "break"
+        scopes: [keyword.control.dart]
+      - span: "label"
+        scopes: [variable.other.readwrite.dart]
+        nth: 1
+
+  - line: "await for (final item in items) yield item;"
+    assertions:
+      - span: "await"
+        scopes: [keyword.control.dart]
+      - span: "for"
+        scopes: [keyword.control.dart]
+      - span: "final"
+        scopes: [storage.modifier.dart]
+      - span: "in"
+        scopes: [keyword.control.dart]
+        nth: 1
+      - span: "yield"
+        scopes: [keyword.control.dart]

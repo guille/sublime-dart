@@ -1,0 +1,63 @@
+// SYNTAX TEST "Dart.sublime-syntax"
+
+items?..add(1)..clear();
+// <- variable.other.readwrite.dart
+ // <- variable.other.readwrite.dart
+//^^^ variable.other.readwrite.dart
+//   ^^^ punctuation.accessor.dart
+//      ^^^ variable.function.dart
+//          ^ constant.numeric.integer.decimal.dart
+//            ^^ punctuation.accessor.dart
+//              ^^^^^ variable.function.dart
+
+value = condition ? left : right;
+// <- variable.other.readwrite.dart
+ // <- variable.other.readwrite.dart
+//^^^ variable.other.readwrite.dart
+//    ^ keyword.operator.assignment.dart
+//                ^ keyword.operator.conditional.dart
+//                       ^ punctuation.separator.colon.dart
+
+result ??= other as String;
+//     ^^^ keyword.operator.assignment.dart
+//               ^^ keyword.operator.word.dart
+//                  ^^^^^^ storage.type.dart
+
+flag = value is! int && !done;
+//           ^^ keyword.operator.word.dart
+//             ^ keyword.operator.logical.dart
+//               ^^^ storage.type.dart
+//                   ^^ keyword.operator.logical.dart
+//                      ^ keyword.operator.logical.dart
+
+final data = <String, List<int>>{};
+//            ^^^^^^ meta.generic.dart storage.type.dart
+//                    ^^^^ meta.generic.dart support.type.dart
+//                         ^^^ meta.generic.dart storage.type.dart
+//                              ^ punctuation.section.block.begin.dart
+//                               ^ punctuation.section.block.end.dart
+
+final callback = Mapper<int>.from(source);
+//               ^^^^^^ support.type.dart
+//                      ^^^ meta.generic.dart storage.type.dart
+//                          ^ punctuation.accessor.dart
+//                           ^^^^ variable.function.dart
+
+label: while (true) break label;
+// <- entity.name.label.dart
+ // <- entity.name.label.dart
+//^^^ entity.name.label.dart
+//   ^ punctuation.separator.colon.dart
+//     ^^^^^ keyword.control.dart
+//            ^^^^ constant.language.dart
+//                  ^^^^^ keyword.control.dart
+//                        ^^^^^ variable.other.readwrite.dart
+
+await for (final item in items) yield item;
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^ keyword.control.dart
+//    ^^^ keyword.control.dart
+//         ^^^^^ storage.modifier.dart
+//                    ^^ keyword.control.dart
+//                              ^^^^^ keyword.control.dart

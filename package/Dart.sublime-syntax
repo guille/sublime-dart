@@ -208,6 +208,7 @@ contexts:
 
   declarations:
     - include: metadata
+    - include: variable-declarations
     - match: '(?={{declaration_start}}\bclass\b)'
       push: class-declaration
     - match: '(?={{declaration_start}}\bmixin\b)'
@@ -220,6 +221,8 @@ contexts:
       push: typedef-declaration
     - match: '(?=\b(?:external\s+)?(?:const\s+)?factory\s+{{type_ref}}(?:\.{{plain_identifier}})?\s*{{parameter_signature}}\s*(?:=>|\{|;|:))'
       push: factory-constructor-declaration
+    - match: '(?=\b(?:external\s+)?(?:const\s+)?{{type_identifier}}(?:\.{{plain_identifier}})?\s*{{parameter_signature}}\s*(?:=>|\{|;|:))'
+      push: constructor-declaration
     - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?(?:get|set)\s+{{plain_identifier}}(?:\s*{{parameter_signature}})?\s*(?:=>|\{|;))'
       push: accessor-declaration
     - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*{{parameter_signature}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
@@ -473,6 +476,18 @@ contexts:
     - match: '(?=\S)'
       pop: 1
 
+  constructor-declaration:
+    - meta_scope: meta.function.constructor.dart
+    - include: declaration-prefix
+    - match: '\bconst\b'
+      scope: storage.modifier.dart
+    - include: whitespace
+    - include: constructor-name-path
+    - match: '(?=\()'
+      set: expect-constructor-parameters
+    - match: '(?=\S)'
+      pop: 1
+
   constructor-name-path:
     - match: '\b{{type_identifier}}\b'
       scope: entity.name.class.dart
@@ -636,7 +651,7 @@ contexts:
       scope: keyword.control.dart
 
   variable-declarations:
-    - match: '\b(?:var|final|const|late)\b'
+    - match: '\b(?:var|final|const|late|static|covariant)\b'
       scope: storage.modifier.dart
     - match: '\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b'
       scope: storage.type.dart
@@ -827,7 +842,7 @@ contexts:
   numbers:
     - match: '\b0[xX]{{numeric_separator_hex}}\b'
       scope: constant.numeric.integer.hexadecimal.dart
-    - match: '(?:(?<=\W)|^){{decimal_fraction}}(?:{{exponent}})?\b'
+    - match: '(?:\b{{numeric_separator_digits}}?\.(?:{{numeric_separator_digits}})(?:{{exponent}})?\b|(?<!{{identifier_part}})\.{{numeric_separator_digits}}(?:{{exponent}})?\b)'
       scope: constant.numeric.float.dart
     - match: '\b{{decimal_integer}}{{exponent}}\b'
       scope: constant.numeric.float.dart
@@ -1038,7 +1053,7 @@ contexts:
     - match: '\}'
       scope: punctuation.section.parameters.end.dart
     - match: '\brequired\b'
-      scope: storage.modifier.dart
+      scope: keyword.declaration.parameter.dart
     - match: '\bthis\b'
       scope: variable.language.dart
     - match: '{{identifier}}(?=\s*\.)'
@@ -1085,7 +1100,7 @@ contexts:
     - match: '\}'
       scope: punctuation.section.parameters.end.dart
     - match: '\brequired\b'
-      scope: storage.modifier.dart
+      scope: keyword.declaration.parameter.dart
     - match: '(\bFunction\b)(\s*)(\()'
       captures:
         1: storage.type.dart
@@ -1129,7 +1144,7 @@ contexts:
     - match: '\}'
       scope: punctuation.section.parameters.end.dart
     - match: '\brequired\b'
-      scope: storage.modifier.dart
+      scope: keyword.declaration.parameter.dart
     - match: '(\bFunction\b)(\s*)(\()'
       captures:
         1: storage.type.dart

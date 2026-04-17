@@ -47,7 +47,7 @@ throw ArgumentError('Invalid ID: $id');
 // <- keyword.control.dart
  // <- keyword.control.dart
 //^^^ keyword.control.dart
-//    ^^^^^^^^^^^^^ support.type.dart
+//    ^^^^^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
 
 return _expensiveWork(n);
 // <- keyword.control.dart
@@ -67,6 +67,18 @@ factory Either.left(L value) => Either._left(value);
 //^^^^^ meta.function.constructor.dart keyword.declaration.function.dart
 //      ^^^^^^ meta.function.constructor.dart entity.name.class.dart
 //             ^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+
+const Shape({required this.color});
+//           ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                    ^^^^ meta.function.parameters.dart variable.language.dart
+//                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+static const int Foo = 6;
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^^ storage.modifier.dart
+//     ^^^^^ storage.modifier.dart
+//           ^^^ storage.type.dart
 
 switch (value) { case 0: return 1; default: throw StateError('x'); }
 // <- keyword.control.dart

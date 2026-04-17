@@ -108,7 +108,7 @@ tests:
   - line: "int parse(String value, {required int radix = 10}) => 0;"
     assertions:
       - span: "int"
-        scopes: [meta.function.dart, storage.type.dart]
+        scopes: [storage.type.dart]
         nth: 0
       - span: "parse"
         scopes: [meta.function.dart, entity.name.function.dart]
@@ -119,7 +119,7 @@ tests:
       - span: "value"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
       - span: "required"
-        scopes: [meta.function.parameters.dart, storage.modifier.dart]
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
       - span: "radix"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
       - span: "10"
@@ -127,10 +127,36 @@ tests:
       - span: "=>"
         scopes: [keyword.operator.arrow.dart]
 
+  - line: "const Shape({required this.color});"
+    assertions:
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "Shape"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "static const int Foo = 6;"
+    assertions:
+      - span: "static"
+        scopes: [storage.modifier.dart]
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "int"
+        scopes: [storage.type.dart]
+      - span: "Foo"
+        scopes: [support.type.dart]
+      - span: "6"
+        scopes: [constant.numeric.integer.decimal.dart]
+
   - line: "String get name => _name;"
     assertions:
       - span: "String"
-        scopes: [meta.function.accessor.dart, storage.type.dart]
+        scopes: [storage.type.dart]
       - span: "get"
         scopes: [meta.function.accessor.dart, keyword.declaration.function.dart]
       - span: "name"

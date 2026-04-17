@@ -67,22 +67,40 @@ typedef Mapper<T> = T Function(String value);
 //             ^^^^ meta.function-call.arguments.dart string.quoted.single.dart
 
 int parse(String value, {required int radix = 10}) => 0;
-// <- meta.function.dart storage.type.dart
- // <- meta.function.dart storage.type.dart
-//^ meta.function.dart storage.type.dart
+// <- storage.type.dart
+ // <- storage.type.dart
+//^ storage.type.dart
 //  ^^^^^ meta.function.dart entity.name.function.dart
 //       ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
 //        ^^^^^^ meta.function.parameters.dart storage.type.dart
 //               ^^^^^ meta.function.parameters.dart variable.parameter.dart
-//                       ^^^^^^^^ meta.function.parameters.dart storage.modifier.dart
+//                       ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
 //                                    ^^^^^ meta.function.parameters.dart variable.parameter.dart
 //                                            ^^ meta.function.parameters.dart constant.numeric.integer.decimal.dart
 //                                                 ^^ keyword.operator.arrow.dart
 
+const Shape({required this.color});
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^ storage.modifier.dart
+//    ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//           ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                    ^^^^ meta.function.parameters.dart variable.language.dart
+//                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+static const int Foo = 6;
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^^ storage.modifier.dart
+//     ^^^^^ storage.modifier.dart
+//           ^^^ storage.type.dart
+//               ^^^ support.type.dart
+//                     ^ constant.numeric.integer.decimal.dart
+
 String get name => _name;
-// <- meta.function.accessor.dart storage.type.dart
- // <- meta.function.accessor.dart storage.type.dart
-//^^^^ meta.function.accessor.dart storage.type.dart
+// <- storage.type.dart
+ // <- storage.type.dart
+//^^^^ storage.type.dart
 //     ^^^ meta.function.accessor.dart keyword.declaration.function.dart
 //         ^^^^ meta.function.accessor.dart entity.name.function.dart
 //              ^^ keyword.operator.arrow.dart

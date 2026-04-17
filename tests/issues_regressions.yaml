@@ -80,7 +80,7 @@ tests:
       - span: "throw"
         scopes: [keyword.control.dart]
       - span: "ArgumentError"
-        scopes: [support.type.dart]
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
 
   - line: "return _expensiveWork(n);"
     assertions:
@@ -104,6 +104,24 @@ tests:
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
       - span: "left"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+
+  - line: "const Shape({required this.color});"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "static const int Foo = 6;"
+    assertions:
+      - span: "static"
+        scopes: [storage.modifier.dart]
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "int"
+        scopes: [storage.type.dart]
 
   - line: "switch (value) { case 0: return 1; default: throw StateError('x'); }"
     assertions:

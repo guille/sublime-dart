@@ -98,6 +98,20 @@ class Shape { const Shape({required this.color}); }
 //                                  ^^^^ meta.function.parameters.dart variable.language.dart
 //                                       ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
+void configure({bool enabled = false}) {}
+//   ^^^^^^^^^ meta.function.dart entity.name.function.dart
+//                   ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                           ^ meta.function.parameters.dart keyword.operator.assignment.dart
+//                             ^^^^^ meta.function.parameters.dart constant.language.dart
+
+class MyClass { MyClass({this.enabled = false}); }
+//    ^^^^^^^ meta.class.dart entity.name.class.dart
+//              ^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                       ^^^^ meta.function.parameters.dart variable.language.dart
+//                            ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                    ^ meta.function.parameters.dart keyword.operator.assignment.dart
+//                                      ^^^^^ meta.function.parameters.dart constant.language.dart
+
 static const int Foo = 6;
 // <- storage.modifier.dart
  // <- storage.modifier.dart

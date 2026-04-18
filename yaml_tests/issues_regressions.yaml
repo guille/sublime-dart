@@ -153,6 +153,11 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
+  - line: "MyClass({this.enabled = false});"
+    assertions:
+      - span: "false"
+        scopes: [constant.language.dart]
+
   - line: "class Rectangle extends Shape { const Rectangle({required super.color, required this.width, required this.height}); }"
     assertions:
       - span: "required"

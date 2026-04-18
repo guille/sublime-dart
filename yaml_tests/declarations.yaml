@@ -163,6 +163,34 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
+  - line: "void configure({bool enabled = false}) {}"
+    assertions:
+      - span: "configure"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "enabled"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "="
+        scopes: [meta.function.parameters.dart, keyword.operator.assignment.dart]
+      - span: "false"
+        scopes: [meta.function.parameters.dart, constant.language.dart]
+
+  - line: "class MyClass { MyClass({this.enabled = false}); }"
+    assertions:
+      - span: "MyClass"
+        scopes: [meta.class.dart, entity.name.class.dart]
+        nth: 0
+      - span: "MyClass"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        nth: 1
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "enabled"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "="
+        scopes: [meta.function.parameters.dart, keyword.operator.assignment.dart]
+      - span: "false"
+        scopes: [meta.function.parameters.dart, constant.language.dart]
+
   - line: "static const int Foo = 6;"
     assertions:
       - span: "static"

@@ -95,6 +95,9 @@ class Shape { const Shape({required this.color}); }
 //                                  ^^^^ meta.function.parameters.dart variable.language.dart
 //                                       ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
+MyClass({this.enabled = false});
+//                      ^^^^^ constant.language.dart
+
 class Rectangle extends Shape { const Rectangle({required super.color, required this.width, required this.height}); }
 //                                               ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
 //                                                        ^^^^^ meta.function.parameters.dart variable.language.dart

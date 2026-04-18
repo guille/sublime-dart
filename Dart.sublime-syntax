@@ -1237,6 +1237,7 @@ contexts:
       scope: variable.parameter.dart
     - match: '[:=]'
       scope: keyword.operator.assignment.dart
+      push: parameter-default-value
     - include: punctuation-commas
     - include: expressions
 
@@ -1282,7 +1283,83 @@ contexts:
       set: parameter-function-tail
     - match: '{{identifier}}'
       scope: variable.parameter.dart
+    - match: '[:=]'
+      scope: keyword.operator.assignment.dart
+      push: parameter-default-value
     - include: punctuation-commas
+
+  parameter-default-value:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - include: comments
+    - match: '(?=,)'
+      pop: 1
+    - match: '(?=[)\]\}])'
+      pop: 1
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: parameter-default-value-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: parameter-default-value-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: parameter-default-value-braces
+    - include: expressions
+
+  parameter-default-value-group:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: parameter-default-value-group
+    - match: '\)'
+      scope: punctuation.section.group.end.dart
+      pop: 1
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: parameter-default-value-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: parameter-default-value-braces
+    - include: expressions
+
+  parameter-default-value-brackets:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: parameter-default-value-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: parameter-default-value-brackets
+    - match: '\]'
+      scope: punctuation.section.brackets.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: parameter-default-value-braces
+    - include: expressions
+
+  parameter-default-value-braces:
+    - meta_scope: meta.function.parameters.dart
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: parameter-default-value-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: parameter-default-value-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: parameter-default-value-braces
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - include: expressions
 
   parameter-function-tail:
     - meta_scope: meta.function.parameters.dart

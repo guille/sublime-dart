@@ -79,14 +79,24 @@ int parse(String value, {required int radix = 10}) => 0;
 //                                            ^^ meta.function.parameters.dart constant.numeric.integer.decimal.dart
 //                                                 ^^ keyword.operator.arrow.dart
 
-const Shape({required this.color});
-// <- storage.modifier.dart
- // <- storage.modifier.dart
-//^^^ storage.modifier.dart
-//    ^^^^^ meta.function.constructor.dart entity.name.class.dart
-//           ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                    ^^^^ meta.function.parameters.dart variable.language.dart
-//                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
+bool matches(bool Function(String value) predicate, {required int seed}) { return predicate('$seed'); }
+// <- storage.type.dart
+ // <- storage.type.dart
+//^^ storage.type.dart
+//   ^^^^^^^ meta.function.dart entity.name.function.dart
+//                ^^^^^^^^ meta.function.parameters.dart storage.type.dart
+//                                       ^^^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                   ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                                ^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                                       ^ meta.block.dart punctuation.section.block.begin.dart
+
+class Shape { const Shape({required this.color}); }
+//    ^^^^^ meta.class.dart entity.name.class.dart
+//            ^^^^^ storage.modifier.dart
+//                  ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                         ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                  ^^^^ meta.function.parameters.dart variable.language.dart
+//                                       ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
 static const int Foo = 6;
 // <- storage.modifier.dart
@@ -114,25 +124,21 @@ set value(int next) {}
 //            ^^^^ meta.function.parameters.dart variable.parameter.dart
 //                  ^ meta.block.dart punctuation.section.block.begin.dart
 
-const Point.origin() : this(0, 0);
-// <- storage.modifier.dart
- // <- storage.modifier.dart
-//^^^ storage.modifier.dart
-//    ^^^^^ meta.function.constructor.dart entity.name.class.dart
-//          ^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
-//                   ^ punctuation.separator.colon.dart
-//                     ^^^^ variable.language.dart
+class Point { const Point.origin() : this(0, 0); }
+//            ^^^^^ storage.modifier.dart
+//                  ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                        ^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+//                                 ^ punctuation.separator.colon.dart
+//                                   ^^^^ variable.language.dart
 
-Point.named(int x) : width = x, assert(x > 0), super();
-// <- meta.function.constructor.dart entity.name.class.dart
- // <- meta.function.constructor.dart entity.name.class.dart
-//^^^ meta.function.constructor.dart entity.name.class.dart
-//    ^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
-//          ^^^ meta.function.parameters.dart storage.type.dart
-//              ^ meta.function.parameters.dart variable.parameter.dart
-//                   ^^^^^ variable.other.readwrite.dart
-//                              ^^^^^^ keyword.control.dart
-//                                             ^^^^^ variable.language.dart
+class Point extends Base { Point.named(int x) : width = x, assert(x > 0), super(); }
+//                         ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                               ^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+//                                     ^^^ meta.function.parameters.dart storage.type.dart
+//                                         ^ meta.function.parameters.dart variable.parameter.dart
+//                                              ^^^^^ variable.other.readwrite.dart
+//                                                         ^^^^^^ keyword.control.dart
+//                                                                        ^^^^^ variable.language.dart
 
 bool operator ==(Object other) => true;
 //   ^^^^^^^^ meta.function.dart keyword.declaration.function.dart

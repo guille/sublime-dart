@@ -37,11 +37,30 @@ final data = <String, List<int>>{};
 //                              ^ punctuation.section.block.begin.dart
 //                               ^ punctuation.section.block.end.dart
 
+List<Piece?> board = []..length = 128;
+// <- support.type.dart
+ // <- support.type.dart
+//^^ support.type.dart
+//   ^^^^^ meta.generic.dart support.type.dart
+//        ^ meta.generic.dart storage.modifier.optional.dart
+//           ^^^^^ variable.other.readwrite.dart
+
+final data = <String, List<Piece?>>{};
+//            ^^^^^^ meta.generic.dart storage.type.dart
+//                    ^^^^ meta.generic.dart support.type.dart
+//                         ^^^^^ meta.generic.dart support.type.dart
+//                              ^ meta.generic.dart storage.modifier.optional.dart
+
 final callback = Mapper<int>.from(source);
 //               ^^^^^^ support.type.dart
 //                      ^^^ meta.generic.dart storage.type.dart
 //                          ^ punctuation.accessor.dart
 //                           ^^^^ variable.function.dart
+
+final board = Chess.fromFEN(fen, check_validity: false);
+//            ^^^^^ support.type.dart
+//                  ^^^^^^^ variable.function.dart
+//                               ^^^^^^^^^^^^^^ variable.parameter.dart
 
 label: while (true) break label;
 // <- entity.name.label.dart

@@ -127,12 +127,35 @@ tests:
       - span: "=>"
         scopes: [keyword.operator.arrow.dart]
 
-  - line: "const Shape({required this.color});"
+  - line: "bool matches(bool Function(String value) predicate, {required int seed}) { return predicate('$seed'); }"
     assertions:
+      - span: "bool"
+        scopes: [storage.type.dart]
+        nth: 0
+      - span: "matches"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "Function"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "predicate"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "seed"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+        nth: 1
+
+  - line: "class Shape { const Shape({required this.color}); }"
+    assertions:
+      - span: "Shape"
+        scopes: [meta.class.dart, entity.name.class.dart]
+        nth: 0
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Shape"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        nth: 1
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
       - span: "this"
@@ -177,12 +200,13 @@ tests:
       - span: "{"
         scopes: [meta.block.dart, punctuation.section.block.begin.dart]
 
-  - line: "const Point.origin() : this(0, 0);"
+  - line: "class Point { const Point.origin() : this(0, 0); }"
     assertions:
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Point"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        nth: 1
       - span: "origin"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
       - span: ":"
@@ -190,18 +214,19 @@ tests:
       - span: "this"
         scopes: [variable.language.dart]
 
-  - line: "Point.named(int x) : width = x, assert(x > 0), super();"
+  - line: "class Point extends Base { Point.named(int x) : width = x, assert(x > 0), super(); }"
     assertions:
       - span: "Point"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        nth: 1
       - span: "named"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
       - span: "int"
         scopes: [meta.function.parameters.dart, storage.type.dart]
-        nth: 1
+        nth: 2
       - span: "x"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
-        nth: 0
+        nth: 1
       - span: "width"
         scopes: [variable.other.readwrite.dart]
       - span: "assert"

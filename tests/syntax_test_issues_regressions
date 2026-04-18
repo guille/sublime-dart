@@ -47,7 +47,7 @@ throw ArgumentError('Invalid ID: $id');
 // <- keyword.control.dart
  // <- keyword.control.dart
 //^^^ keyword.control.dart
-//    ^^^^^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//    ^^^^^^^^^^^^^ support.type.dart
 
 return _expensiveWork(n);
 // <- keyword.control.dart
@@ -61,86 +61,112 @@ await runZonedGuarded();
 //^^^ keyword.control.dart
 //    ^^^^^^^^^^^^^^^ variable.function.dart
 
-factory Either.left(L value) => Either._left(value);
-// <- meta.function.constructor.dart keyword.declaration.function.dart
- // <- meta.function.constructor.dart keyword.declaration.function.dart
-//^^^^^ meta.function.constructor.dart keyword.declaration.function.dart
-//      ^^^^^^ meta.function.constructor.dart entity.name.class.dart
-//             ^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+if (is_digit(piece)) {}
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//  ^^^^^^^^ variable.function.dart
+//                   ^ punctuation.section.block.begin.dart
 
-const Shape({required this.color});
-//           ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                    ^^^^ meta.function.parameters.dart variable.language.dart
-//                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
+while (matches(value) && other()) {}
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^ keyword.control.dart
+//     ^^^^^^^ variable.function.dart
+//                       ^^^^^ variable.function.dart
+//                    ^^ keyword.operator.logical.dart
 
-const Rectangle({required super.color, required this.width, required this.height});
-//               ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                        ^^^^^ meta.function.parameters.dart variable.language.dart
-//                              ^^^^^ meta.function.parameters.dart variable.parameter.dart
-//                                     ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                                              ^^^^ meta.function.parameters.dart variable.language.dart
-//                                                   ^^^^^ meta.function.parameters.dart variable.parameter.dart
-//                                                          ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                                                                   ^^^^ meta.function.parameters.dart variable.language.dart
-//                                                                        ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+boardPart.split('').where((elem) => elem == 'K').length;
+//        ^^^^^ variable.function.dart
+//                  ^^^^^ variable.function.dart
+//                               ^^ keyword.operator.arrow.dart
 
-Circle({super.color, this.radius})
-//      ^^^^^ meta.function.parameters.dart variable.language.dart
-//            ^^^^^ meta.function.parameters.dart variable.parameter.dart
-//                   ^^^^ meta.function.parameters.dart variable.language.dart
-//                        ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+callbacks.map(({required int value}) => value).toList();
+//        ^^^ variable.function.dart
+//                                   ^^ keyword.operator.arrow.dart
+//                                             ^^^^^^ variable.function.dart
 
-const Circle({required super.color, required this.radius});
-//            ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                     ^^^^^ meta.function.parameters.dart variable.language.dart
-//                           ^^^^^ meta.function.parameters.dart variable.parameter.dart
-//                                  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//                                           ^^^^ meta.function.parameters.dart variable.language.dart
-//                                                ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+class Either<L> { factory Either.left(L value) => Either._left(value); }
+//                ^^^^^^^ meta.function.constructor.dart keyword.declaration.function.dart
+//                        ^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                               ^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 
-Circle({
-// <- meta.function.constructor.dart entity.name.class.dart
- // <- meta.function.constructor.dart entity.name.class.dart
-//^^^^ meta.function.constructor.dart entity.name.class.dart
-//     ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
+class Shape { const Shape({required this.color}); }
+//                         ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                  ^^^^ meta.function.parameters.dart variable.language.dart
+//                                       ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-  required super.color,
-//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//         ^^^^^ meta.function.parameters.dart variable.language.dart
-//               ^^^^^ meta.function.parameters.dart variable.parameter.dart
+class Rectangle extends Shape { const Rectangle({required super.color, required this.width, required this.height}); }
+//                                               ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                        ^^^^^ meta.function.parameters.dart variable.language.dart
+//                                                              ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                                     ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                                              ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                                                   ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                                                          ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                                                                   ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                                                                        ^^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-  required this.radius})
-//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//         ^^^^ meta.function.parameters.dart variable.language.dart
-//              ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+class Circle extends Shape { Circle({super.color, this.radius}); }
+//                                   ^^^^^ meta.function.parameters.dart variable.language.dart
+//                                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                     ^^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-    : assert(radius > 0, 'Radius must be positive');
-//  ^ punctuation.separator.colon.dart
-//    ^^^^^^ keyword.control.dart
+class Circle extends Shape { const Circle({required super.color, required this.radius}); }
+//                                         ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                  ^^^^^ meta.function.parameters.dart variable.language.dart
+//                                                        ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                               ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                                        ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                                             ^^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-const Rectangle({
-// <- storage.modifier.dart
- // <- storage.modifier.dart
-//^^^ storage.modifier.dart
-//    ^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+class Circle extends Shape {
 
-  required super.color,
-//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//         ^^^^^ meta.function.parameters.dart variable.language.dart
-//               ^^^^^ meta.function.parameters.dart variable.parameter.dart
+  Circle({
+//^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//       ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
 
-  required this.width,
-//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//         ^^^^ meta.function.parameters.dart variable.language.dart
-//              ^^^^^ meta.function.parameters.dart variable.parameter.dart
+    required super.color,
+//  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//           ^^^^^ meta.function.parameters.dart variable.language.dart
+//                 ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-  required this.height,
-//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
-//         ^^^^ meta.function.parameters.dart variable.language.dart
-//              ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+    required this.radius})
+//  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//           ^^^^ meta.function.parameters.dart variable.language.dart
+//                ^^^^^^ meta.function.parameters.dart variable.parameter.dart
 
-});
-// <- meta.function.parameters.dart punctuation.section.parameters.end.dart
+      : assert(radius > 0, 'Radius must be positive');
+//    ^ punctuation.separator.colon.dart
+//      ^^^^^^ keyword.control.dart
+
+}
+
+class Rectangle extends Shape {
+
+  const Rectangle({
+//^^^^^ storage.modifier.dart
+//      ^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+
+    required super.color,
+//  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//           ^^^^^ meta.function.parameters.dart variable.language.dart
+//                 ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+    required this.width,
+//  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//           ^^^^ meta.function.parameters.dart variable.language.dart
+//                ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+    required this.height,
+//  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//           ^^^^ meta.function.parameters.dart variable.language.dart
+//                ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+  });
+//^ meta.function.parameters.dart punctuation.section.parameters.end.dart
+
+}
 
 static const int Foo = 6;
 // <- storage.modifier.dart

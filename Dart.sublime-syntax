@@ -36,6 +36,7 @@ variables:
   qualified_identifier: '(?:{{identifier}}(?:\.{{identifier}})*)'
   generic_clause: '(?:<[^(){};\n]*>)'
   type_ref: '(?:(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)(?:\s*\.\s*(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)*'
+  balanced_parens: '(?<balanced_parens>\((?:[^()]|\g<balanced_parens>)*\))'
 
 contexts:
   main:
@@ -217,18 +218,21 @@ contexts:
       push: enum-declaration
     - match: '(?={{declaration_start}}\btypedef\b)'
       push: typedef-declaration
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?operator\s+(?:\[\]=|\[\]|==|~|[+\-*/%&|^<>]+)\s*{{balanced_parens}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
+      push: operator-declaration
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?(?:get|set)\s+{{plain_identifier}}(?:\s*{{balanced_parens}})?\s*(?:=>|\{|;))'
+      push: accessor-declaration
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*{{balanced_parens}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
+      push: function-declaration
+    - match: '(?=\b{{plain_identifier}}(?:{{generic_clause}})?\s*{{balanced_parens}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{))'
+      push: function-declaration
+
+  member-declarations:
     - match: '(?=\b(?:external\s+)?(?:const\s+)?factory\s+{{type_ref}}(?:\.{{plain_identifier}})?\s*\()'
       push: factory-constructor-declaration
     - match: '(?=\b(?:external\s+)?(?:const\s+)?{{type_identifier}}(?:\.{{plain_identifier}})?\s*\()'
       push: constructor-declaration
-    - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?operator\s+(?:\[\]=|\[\]|==|~|[+\-*/%&|^<>]+)\s*\([^;\n]*\)\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
-      push: operator-declaration
-    - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?(?:get|set)\s+{{plain_identifier}}(?:\s*\([^;\n]*\))?\s*(?:=>|\{|;))'
-      push: accessor-declaration
-    - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*\([^;\n]*\)\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
-      push: function-declaration
-    - match: '(?=\b{{plain_identifier}}(?:{{generic_clause}})?\s*\([^;\n]*\)\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{))'
-      push: function-declaration
+    - include: declarations
 
   metadata:
     - match: '@'
@@ -280,7 +284,7 @@ contexts:
     - include: types
     - match: '\{'
       scope: punctuation.section.block.begin.dart
-      set: block-body
+      set: member-body
     - match: ';'
       scope: punctuation.terminator.dart
       pop: 1
@@ -317,7 +321,7 @@ contexts:
     - include: types
     - match: '\{'
       scope: punctuation.section.block.begin.dart
-      set: block-body
+      set: member-body
     - match: '(?=\S)'
       pop: 1
 
@@ -362,7 +366,7 @@ contexts:
     - include: types
     - match: '\{'
       scope: punctuation.section.block.begin.dart
-      set: block-body
+      set: member-body
     - match: '(?=\S)'
       pop: 1
 
@@ -444,8 +448,7 @@ contexts:
     - match: '\}'
       scope: punctuation.section.block.end.dart
       pop: 1
-    - include: declarations
-    - include: variable-declarations
+    - include: member-declarations
     - include: control-keywords
     - include: punctuation-commas
     - match: ';'
@@ -685,6 +688,22 @@ contexts:
       scope: punctuation.section.block.begin.dart
       push: brace-body
     - include: declarations
+    - include: statements
+    - include: expressions
+    - include: punctuation-common
+
+  member-body:
+    - meta_scope: meta.block.dart
+    - include: whitespace
+    - include: comments
+    - include: metadata
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: brace-body
+    - include: member-declarations
     - include: statements
     - include: expressions
     - include: punctuation-common
@@ -1042,6 +1061,8 @@ contexts:
     - include: whitespace
     - include: type-parameters-trigger
     - include: types
+    - match: '\?'
+      scope: storage.modifier.optional.dart
     - include: punctuation-commas
     - match: '>'
       scope: punctuation.definition.generic.end.dart
@@ -1275,6 +1296,8 @@ contexts:
       scope: punctuation.accessor.dart
     - match: '\?\.'
       scope: punctuation.accessor.dart
+    - match: '=>'
+      scope: keyword.operator.arrow.dart
     - match: '{{assignment_operator}}'
       scope: keyword.operator.assignment.dart
     - match: '\?\?'
@@ -1283,8 +1306,6 @@ contexts:
       scope: keyword.operator.conditional.dart
     - match: ':'
       scope: punctuation.separator.colon.dart
-    - match: '=>'
-      scope: keyword.operator.arrow.dart
     - match: '\.\.'
       scope: punctuation.accessor.dart
     - match: '(?:===|==|!=|<=|>=|<|>)'

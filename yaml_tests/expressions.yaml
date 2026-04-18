@@ -65,6 +65,28 @@ tests:
       - span: "}"
         scopes: [punctuation.section.block.end.dart]
 
+  - line: "List<Piece?> board = []..length = 128;"
+    assertions:
+      - span: "List"
+        scopes: [support.type.dart]
+      - span: "Piece"
+        scopes: [meta.generic.dart, support.type.dart]
+      - span: "?"
+        scopes: [meta.generic.dart, storage.modifier.optional.dart]
+      - span: "board"
+        scopes: [variable.other.readwrite.dart]
+
+  - line: "final data = <String, List<Piece?>>{};"
+    assertions:
+      - span: "String"
+        scopes: [meta.generic.dart, storage.type.dart]
+      - span: "List"
+        scopes: [meta.generic.dart, support.type.dart]
+      - span: "Piece"
+        scopes: [meta.generic.dart, support.type.dart]
+      - span: "?"
+        scopes: [meta.generic.dart, storage.modifier.optional.dart]
+
   - line: "final callback = Mapper<int>.from(source);"
     assertions:
       - span: "Mapper"
@@ -75,6 +97,15 @@ tests:
         scopes: [punctuation.accessor.dart]
       - span: "from"
         scopes: [variable.function.dart]
+
+  - line: "final board = Chess.fromFEN(fen, check_validity: false);"
+    assertions:
+      - span: "Chess"
+        scopes: [support.type.dart]
+      - span: "fromFEN"
+        scopes: [variable.function.dart]
+      - span: "check_validity"
+        scopes: [variable.parameter.dart]
 
   - line: "label: while (true) break label;"
     assertions:

@@ -80,7 +80,7 @@ tests:
       - span: "throw"
         scopes: [keyword.control.dart]
       - span: "ArgumentError"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [support.type.dart]
 
   - line: "return _expensiveWork(n);"
     assertions:
@@ -96,16 +96,55 @@ tests:
       - span: "runZonedGuarded"
         scopes: [variable.function.dart]
 
-  - line: "factory Either.left(L value) => Either._left(value);"
+  - line: "if (is_digit(piece)) {}"
+    assertions:
+      - span: "if"
+        scopes: [keyword.control.dart]
+      - span: "is_digit"
+        scopes: [variable.function.dart]
+      - span: "{"
+        scopes: [punctuation.section.block.begin.dart]
+
+  - line: "while (matches(value) && other()) {}"
+    assertions:
+      - span: "while"
+        scopes: [keyword.control.dart]
+      - span: "matches"
+        scopes: [variable.function.dart]
+      - span: "other"
+        scopes: [variable.function.dart]
+      - span: "&&"
+        scopes: [keyword.operator.logical.dart]
+
+  - line: "boardPart.split('').where((elem) => elem == 'K').length;"
+    assertions:
+      - span: "split"
+        scopes: [variable.function.dart]
+      - span: "where"
+        scopes: [variable.function.dart]
+      - span: "=>"
+        scopes: [keyword.operator.arrow.dart]
+
+  - line: "callbacks.map(({required int value}) => value).toList();"
+    assertions:
+      - span: "map"
+        scopes: [variable.function.dart]
+      - span: "=>"
+        scopes: [keyword.operator.arrow.dart]
+      - span: "toList"
+        scopes: [variable.function.dart]
+
+  - line: "class Either<L> { factory Either.left(L value) => Either._left(value); }"
     assertions:
       - span: "factory"
         scopes: [meta.function.constructor.dart, keyword.declaration.function.dart]
       - span: "Either"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        nth: 1
       - span: "left"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
 
-  - line: "const Shape({required this.color});"
+  - line: "class Shape { const Shape({required this.color}); }"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -114,7 +153,7 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "const Rectangle({required super.color, required this.width, required this.height});"
+  - line: "class Rectangle extends Shape { const Rectangle({required super.color, required this.width, required this.height}); }"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -141,7 +180,7 @@ tests:
       - span: "height"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "Circle({super.color, this.radius})"
+  - line: "class Circle extends Shape { Circle({super.color, this.radius}); }"
     assertions:
       - span: "super"
         scopes: [meta.function.parameters.dart, variable.language.dart]
@@ -152,7 +191,7 @@ tests:
       - span: "radius"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "const Circle({required super.color, required this.radius});"
+  - line: "class Circle extends Shape { const Circle({required super.color, required this.radius}); }"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -169,14 +208,16 @@ tests:
       - span: "radius"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "Circle({"
+  - line: "class Circle extends Shape {"
+
+  - line: "  Circle({"
     assertions:
       - span: "Circle"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
       - span: "{"
         scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
 
-  - line: "  required super.color,"
+  - line: "    required super.color,"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -185,7 +226,7 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "  required this.radius})"
+  - line: "    required this.radius})"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -194,21 +235,25 @@ tests:
       - span: "radius"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "    : assert(radius > 0, 'Radius must be positive');"
+  - line: "      : assert(radius > 0, 'Radius must be positive');"
     assertions:
       - span: ":"
         scopes: [punctuation.separator.colon.dart]
       - span: "assert"
         scopes: [keyword.control.dart]
 
-  - line: "const Rectangle({"
+  - line: "}"
+
+  - line: "class Rectangle extends Shape {"
+
+  - line: "  const Rectangle({"
     assertions:
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Rectangle"
         scopes: [meta.function.constructor.dart, entity.name.class.dart]
 
-  - line: "  required super.color,"
+  - line: "    required super.color,"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -217,7 +262,7 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "  required this.width,"
+  - line: "    required this.width,"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -226,7 +271,7 @@ tests:
       - span: "width"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "  required this.height,"
+  - line: "    required this.height,"
     assertions:
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -235,10 +280,12 @@ tests:
       - span: "height"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
-  - line: "});"
+  - line: "  });"
     assertions:
       - span: "}"
         scopes: [meta.function.parameters.dart, punctuation.section.parameters.end.dart]
+
+  - line: "}"
 
   - line: "static const int Foo = 6;"
     assertions:

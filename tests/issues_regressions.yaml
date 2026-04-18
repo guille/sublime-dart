@@ -114,6 +114,132 @@ tests:
       - span: "color"
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
 
+  - line: "const Rectangle({required super.color, required this.width, required this.height});"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+        nth: 0
+      - span: "super"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+        nth: 0
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+        nth: 1
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+        nth: 0
+      - span: "width"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+        nth: 2
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+        nth: 1
+      - span: "height"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "Circle({super.color, this.radius})"
+    assertions:
+      - span: "super"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "radius"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "const Circle({required super.color, required this.radius});"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+        nth: 0
+      - span: "super"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+        nth: 1
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "radius"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "Circle({"
+    assertions:
+      - span: "Circle"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+      - span: "{"
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
+
+  - line: "  required super.color,"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "super"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "  required this.radius})"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "radius"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "    : assert(radius > 0, 'Radius must be positive');"
+    assertions:
+      - span: ":"
+        scopes: [punctuation.separator.colon.dart]
+      - span: "assert"
+        scopes: [keyword.control.dart]
+
+  - line: "const Rectangle({"
+    assertions:
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "Rectangle"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+
+  - line: "  required super.color,"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "super"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "color"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "  required this.width,"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "width"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "  required this.height,"
+    assertions:
+      - span: "required"
+        scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
+      - span: "this"
+        scopes: [meta.function.parameters.dart, variable.language.dart]
+      - span: "height"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "});"
+    assertions:
+      - span: "}"
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.end.dart]
+
   - line: "static const int Foo = 6;"
     assertions:
       - span: "static"

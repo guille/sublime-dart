@@ -73,6 +73,75 @@ const Shape({required this.color});
 //                    ^^^^ meta.function.parameters.dart variable.language.dart
 //                         ^^^^^ meta.function.parameters.dart variable.parameter.dart
 
+const Rectangle({required super.color, required this.width, required this.height});
+//               ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                        ^^^^^ meta.function.parameters.dart variable.language.dart
+//                              ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                     ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                              ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                   ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                          ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                                                   ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                                        ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+Circle({super.color, this.radius})
+//      ^^^^^ meta.function.parameters.dart variable.language.dart
+//            ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                   ^^^^ meta.function.parameters.dart variable.language.dart
+//                        ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+const Circle({required super.color, required this.radius});
+//            ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                     ^^^^^ meta.function.parameters.dart variable.language.dart
+//                           ^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//                                           ^^^^ meta.function.parameters.dart variable.language.dart
+//                                                ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+Circle({
+// <- meta.function.constructor.dart entity.name.class.dart
+ // <- meta.function.constructor.dart entity.name.class.dart
+//^^^^ meta.function.constructor.dart entity.name.class.dart
+//     ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
+
+  required super.color,
+//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//         ^^^^^ meta.function.parameters.dart variable.language.dart
+//               ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+  required this.radius})
+//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//         ^^^^ meta.function.parameters.dart variable.language.dart
+//              ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+    : assert(radius > 0, 'Radius must be positive');
+//  ^ punctuation.separator.colon.dart
+//    ^^^^^^ keyword.control.dart
+
+const Rectangle({
+// <- storage.modifier.dart
+ // <- storage.modifier.dart
+//^^^ storage.modifier.dart
+//    ^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+
+  required super.color,
+//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//         ^^^^^ meta.function.parameters.dart variable.language.dart
+//               ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+  required this.width,
+//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//         ^^^^ meta.function.parameters.dart variable.language.dart
+//              ^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+  required this.height,
+//^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
+//         ^^^^ meta.function.parameters.dart variable.language.dart
+//              ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
+});
+// <- meta.function.parameters.dart punctuation.section.parameters.end.dart
+
 static const int Foo = 6;
 // <- storage.modifier.dart
  // <- storage.modifier.dart

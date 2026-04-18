@@ -69,3 +69,6 @@ final raw = r'${notInterpolated}';
 
 final sym = #foo.bar;
 //          ^^^^^^^^ constant.other.symbol.dart
+
+final ratio = .5;
+//            ^^ constant.numeric.float.dart

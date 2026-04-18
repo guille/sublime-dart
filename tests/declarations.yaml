@@ -176,3 +176,66 @@ tests:
         scopes: [meta.function.parameters.dart, variable.parameter.dart]
       - span: "{"
         scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "const Point.origin() : this(0, 0);"
+    assertions:
+      - span: "const"
+        scopes: [storage.modifier.dart]
+      - span: "Point"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+      - span: "origin"
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+      - span: ":"
+        scopes: [punctuation.separator.colon.dart]
+      - span: "this"
+        scopes: [variable.language.dart]
+
+  - line: "Point.named(int x) : width = x, assert(x > 0), super();"
+    assertions:
+      - span: "Point"
+        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+      - span: "named"
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+      - span: "int"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+        nth: 1
+      - span: "x"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+        nth: 0
+      - span: "width"
+        scopes: [variable.other.readwrite.dart]
+      - span: "assert"
+        scopes: [keyword.control.dart]
+      - span: "super"
+        scopes: [variable.language.dart]
+
+  - line: "bool operator ==(Object other) => true;"
+    assertions:
+      - span: "operator"
+        scopes: [meta.function.dart, keyword.declaration.function.dart]
+      - span: "=="
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "Object"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "other"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "int operator [](int index) => values[index];"
+    assertions:
+      - span: "operator"
+        scopes: [meta.function.dart, keyword.declaration.function.dart]
+      - span: "[]"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "index"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "void operator []=(int index, int value) {}"
+    assertions:
+      - span: "operator"
+        scopes: [meta.function.dart, keyword.declaration.function.dart]
+      - span: "[]="
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "index"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "value"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]

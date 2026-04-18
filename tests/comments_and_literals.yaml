@@ -111,3 +111,8 @@ tests:
     assertions:
       - span: "#foo.bar"
         scopes: [constant.other.symbol.dart]
+
+  - line: "final ratio = .5;"
+    assertions:
+      - span: ".5"
+        scopes: [constant.numeric.float.dart]

@@ -183,3 +183,19 @@ switch (value) { case 0: return 1; default: throw StateError('x'); }
 //                       ^^^^^^ keyword.control.dart
 //                                 ^^^^^^^ keyword.control.dart
 //                                          ^^^^^ keyword.control.dart
+
+switch (token) { case 'x' when isLetter(token): return 1; default: return 0; }
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^^^^ keyword.control.dart
+//               ^^^^ keyword.control.dart
+//                        ^^^^ keyword.control.dart
+//                             ^^^^^^^^ variable.function.dart
+//                                              ^^^^^^ keyword.control.dart
+//                                                        ^^^^^^^ keyword.control.dart
+
+final score = switch (token) { 'x' when isLetter(token) => 1, _ => 0 };
+//            ^^^^^^ keyword.control.dart
+//                                 ^^^^ keyword.control.dart
+//                                      ^^^^^^^^ variable.function.dart
+//                                                      ^^ keyword.operator.arrow.dart

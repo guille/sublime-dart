@@ -308,3 +308,31 @@ tests:
         scopes: [keyword.control.dart]
       - span: "throw"
         scopes: [keyword.control.dart]
+
+  - line: "switch (token) { case 'x' when isLetter(token): return 1; default: return 0; }"
+    assertions:
+      - span: "switch"
+        scopes: [keyword.control.dart]
+      - span: "case"
+        scopes: [keyword.control.dart]
+      - span: "when"
+        scopes: [keyword.control.dart]
+      - span: "isLetter"
+        scopes: [variable.function.dart]
+      - span: "return"
+        scopes: [keyword.control.dart]
+        nth: 0
+      - span: "default"
+        scopes: [keyword.control.dart]
+
+  - line: "final score = switch (token) { 'x' when isLetter(token) => 1, _ => 0 };"
+    assertions:
+      - span: "switch"
+        scopes: [keyword.control.dart]
+      - span: "when"
+        scopes: [keyword.control.dart]
+      - span: "isLetter"
+        scopes: [variable.function.dart]
+      - span: "=>"
+        scopes: [keyword.operator.arrow.dart]
+        nth: 0

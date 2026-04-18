@@ -729,7 +729,10 @@ contexts:
     - include: variable-declarations
 
   control-keywords:
-    - match: '\b(?:if|else|switch|case|default|for|while|do|try|catch|finally|break|continue|return|rethrow|throw|yield|assert|on|in)\b'
+    - match: '\bwhen\b(?=[^{};]*=>)'
+      scope: keyword.control.dart
+      push: switch-expression-guard-after-when
+    - match: '\b(?:if|else|switch|case|default|for|while|do|try|catch|finally|break|continue|return|rethrow|throw|yield|assert|on|in|when)\b'
       scope: keyword.control.dart
 
   variable-declarations:
@@ -759,10 +762,82 @@ contexts:
     - include: punctuation
 
   keyword-operators-and-controls:
-    - match: '\b(?:switch|throw|return|rethrow|yield|await|if|else|for|while|do|try|catch|finally|break|continue|assert|case|default|in|on)\b'
+    - match: '\bwhen\b(?=[^{};]*=>)'
+      scope: keyword.control.dart
+      push: switch-expression-guard-after-when
+    - match: '\b(?:switch|throw|return|rethrow|yield|await|if|else|for|while|do|try|catch|finally|break|continue|assert|case|default|in|on|when)\b'
       scope: keyword.control.dart
     - match: '\b(?:is|as|new)\b'
       scope: keyword.operator.word.dart
+
+  switch-expression-guard-after-when:
+    - include: whitespace
+    - include: comments
+    - match: '(?==>)'
+      pop: 1
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: switch-expression-guard-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: switch-expression-guard-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: switch-expression-guard-braces
+    - include: expressions
+    - match: '$'
+      pop: 1
+
+  switch-expression-guard-group:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: switch-expression-guard-group
+    - match: '\)'
+      scope: punctuation.section.group.end.dart
+      pop: 1
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: switch-expression-guard-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: switch-expression-guard-braces
+    - include: expressions
+
+  switch-expression-guard-brackets:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: switch-expression-guard-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: switch-expression-guard-brackets
+    - match: '\]'
+      scope: punctuation.section.brackets.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: switch-expression-guard-braces
+    - include: expressions
+
+  switch-expression-guard-braces:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: switch-expression-guard-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: switch-expression-guard-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: switch-expression-guard-braces
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - include: expressions
 
   anonymous-variable:
     - match: '\b_\b'

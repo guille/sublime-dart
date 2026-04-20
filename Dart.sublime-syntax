@@ -207,7 +207,6 @@ contexts:
 
   declarations:
     - include: metadata
-    - include: variable-declarations
     - match: '(?={{declaration_start}}\bclass\b)'
       push: class-declaration
     - match: '(?={{declaration_start}}\bmixin\b)'
@@ -222,10 +221,11 @@ contexts:
       push: operator-declaration
     - match: '(?=\b(?:{{storage_modifiers}}\s+)*(?:{{type_ref}}\s+)?(?:get|set)\s+{{plain_identifier}}(?:\s*{{balanced_parens}})?\s*(?:=>|\{|;))'
       push: accessor-declaration
-    - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*{{balanced_parens}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{|;))'
+    - match: '(?=\b(?:{{storage_modifiers}}\s+)*{{type_ref}}\s+{{plain_identifier}}(?:{{generic_clause}})?\s*\()'
       push: function-declaration
     - match: '(?=\b{{plain_identifier}}(?:{{generic_clause}})?\s*{{balanced_parens}}\s*(?:async(?:\s*\*)?|sync\s*\*|=>|\{))'
       push: function-declaration
+    - include: variable-declarations
 
   member-declarations:
     - match: '(?=\b(?:external\s+)?(?:const\s+)?factory\s+{{type_ref}}(?:\.{{plain_identifier}})?\s*\()'

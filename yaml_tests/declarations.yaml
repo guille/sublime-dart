@@ -146,6 +146,67 @@ tests:
         scopes: [meta.block.dart, punctuation.section.block.begin.dart]
         nth: 1
 
+  - line: "int startProgress(String message) {"
+    assertions:
+      - span: "int"
+        scopes: [storage.type.dart]
+      - span: "startProgress"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "message"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "int startProgress("
+    assertions:
+      - span: "int"
+        scopes: [storage.type.dart]
+      - span: "startProgress"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "("
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
+
+  - line: "  String message) {"
+    assertions:
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "message"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: ")"
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.end.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "}"
+
+  - line: "class Worker {"
+
+  - line: "  int startProgress("
+    assertions:
+      - span: "int"
+        scopes: [storage.type.dart]
+      - span: "startProgress"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "("
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
+
+  - line: "    String message) {"
+    assertions:
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "message"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: ")"
+        scopes: [meta.function.parameters.dart, punctuation.section.parameters.end.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "  }"
+
+  - line: "}"
+
   - line: "class Shape { const Shape({required this.color}); }"
     assertions:
       - span: "Shape"

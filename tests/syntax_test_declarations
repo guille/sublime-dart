@@ -90,6 +90,47 @@ bool matches(bool Function(String value) predicate, {required int seed}) { retur
 //                                                                ^^^^ meta.function.parameters.dart variable.parameter.dart
 //                                                                       ^ meta.block.dart punctuation.section.block.begin.dart
 
+int startProgress(String message) {
+// <- storage.type.dart
+ // <- storage.type.dart
+//^ storage.type.dart
+//  ^^^^^^^^^^^^^ meta.function.dart entity.name.function.dart
+//                ^^^^^^ meta.function.parameters.dart storage.type.dart
+//                       ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                ^ meta.block.dart punctuation.section.block.begin.dart
+
+int startProgress(
+// <- storage.type.dart
+ // <- storage.type.dart
+//^ storage.type.dart
+//  ^^^^^^^^^^^^^ meta.function.dart entity.name.function.dart
+//               ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
+
+  String message) {
+//^^^^^^ meta.function.parameters.dart storage.type.dart
+//       ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//              ^ meta.function.parameters.dart punctuation.section.parameters.end.dart
+//                ^ meta.block.dart punctuation.section.block.begin.dart
+
+}
+
+class Worker {
+
+  int startProgress(
+//^^^ storage.type.dart
+//    ^^^^^^^^^^^^^ meta.function.dart entity.name.function.dart
+//                 ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
+
+    String message) {
+//  ^^^^^^ meta.function.parameters.dart storage.type.dart
+//         ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                ^ meta.function.parameters.dart punctuation.section.parameters.end.dart
+//                  ^ meta.block.dart punctuation.section.block.begin.dart
+
+  }
+
+}
+
 class Shape { const Shape({required this.color}); }
 //    ^^^^^ meta.class.dart entity.name.class.dart
 //            ^^^^^ storage.modifier.dart

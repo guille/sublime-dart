@@ -52,15 +52,53 @@ final data = <String, List<Piece?>>{};
 //                              ^ meta.generic.dart storage.modifier.optional.dart
 
 final callback = Mapper<int>.from(source);
-//               ^^^^^^ support.type.dart
+//               ^^^^^^ support.class.dart
 //                      ^^^ meta.generic.dart storage.type.dart
 //                          ^ punctuation.accessor.dart
 //                           ^^^^ variable.function.dart
 
 final board = Chess.fromFEN(fen, check_validity: false);
-//            ^^^^^ support.type.dart
+//            ^^^^^ support.class.dart
 //                  ^^^^^^^ variable.function.dart
 //                               ^^^^^^^^^^^^^^ variable.parameter.dart
+
+_previewCodeGenerator = PreviewCodeGenerator();
+// <- variable.other.readwrite.dart
+ // <- variable.other.readwrite.dart
+//^^^^^^^^^^^^^^^^^^^ variable.other.readwrite.dart
+//                      ^^^^^^^^^^^^^^^^^^^^ support.class.dart
+
+PreviewCodeGenerator generator = PreviewCodeGenerator();
+// <- support.type.dart
+ // <- support.type.dart
+//^^^^^^^^^^^^^^^^^^ support.type.dart
+//                   ^^^^^^^^^ variable.other.readwrite.dart
+//                               ^^^^^^^^^^^^^^^^^^^^ support.class.dart
+
+final parsed = int.parse('1');
+//             ^^^ support.class.dart
+//                 ^^^^^ variable.function.dart
+
+WebServerDevice.showWebServerDevice = true;
+// <- support.class.dart
+ // <- support.class.dart
+//^^^^^^^^^^^^^ support.class.dart
+//             ^ punctuation.accessor.dart
+//              ^^^^^^^^^^^^^^^^^^^ variable.other.readwrite.dart
+//                                    ^^^^ constant.language.dart
+
+final values = List<int>.filled(2, 0);
+//             ^^^^ support.class.dart
+//                  ^^^ meta.generic.dart storage.type.dart
+//                       ^^^^^^ variable.function.dart
+
+final casted = value as PreviewCodeGenerator;
+//                   ^^ keyword.operator.word.dart
+//                      ^^^^^^^^^^^^^^^^^^^^ support.type.dart
+
+if (value is PreviewCodeGenerator) {}
+//        ^^ keyword.operator.word.dart
+//           ^^^^^^^^^^^^^^^^^^^^ support.type.dart
 
 label: while (true) break label;
 // <- entity.name.label.dart

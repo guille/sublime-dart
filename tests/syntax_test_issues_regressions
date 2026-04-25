@@ -12,7 +12,7 @@ var buffers = charCodes.map(StringBuffer.new);
 //  ^^^^^^^ variable.other.readwrite.dart
 //            ^^^^^^^^^ variable.other.dart
 //                      ^^^ variable.function.dart
-//                          ^^^^^^^^^^^^ support.type.dart
+//                          ^^^^^^^^^^^^ support.class.dart
 //                                       ^^^ keyword.operator.word.dart
 
 class Circle extends Shape {}
@@ -20,6 +20,9 @@ class Circle extends Shape {}
 //                   ^^^^^ meta.class.dart entity.other.inherited-class.dart
 
 Circle(color: 'red', radius: 5.0)
+// <- support.class.dart
+ // <- support.class.dart
+//^^^^ support.class.dart
 //     ^^^^^ variable.parameter.dart
 //                   ^^^^^^ variable.parameter.dart
 //            ^^^^^ string.quoted.single.dart
@@ -47,7 +50,16 @@ throw ArgumentError('Invalid ID: $id');
 // <- keyword.control.dart
  // <- keyword.control.dart
 //^^^ keyword.control.dart
-//    ^^^^^^^^^^^^^ support.type.dart
+//    ^^^^^^^^^^^^^ support.class.dart
+
+try { fail(); } on StateError catch (error) { throw error; }
+// <- keyword.control.dart
+ // <- keyword.control.dart
+//^ keyword.control.dart
+//              ^^ keyword.control.dart
+//                 ^^^^^^^^^^ support.class.exception.dart
+//                            ^^^^^ keyword.control.dart
+//                                                  ^^^^^ variable.other.readwrite.dart
 
 return _expensiveWork(n);
 // <- keyword.control.dart
@@ -87,7 +99,7 @@ callbacks.map(({required int value}) => value).toList();
 
 class Either<L> { factory Either.left(L value) => Either._left(value); }
 //                ^^^^^^^ meta.function.constructor.dart keyword.declaration.function.dart
-//                        ^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                        ^^^^^^ meta.function.constructor.dart entity.name.type.constructor.dart
 //                               ^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 
 class Shape { const Shape({required this.color}); }
@@ -126,7 +138,7 @@ class Circle extends Shape { const Circle({required super.color, required this.r
 class Circle extends Shape {
 
   Circle({
-//^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 //       ^ meta.function.parameters.dart punctuation.section.parameters.begin.dart
 
     required super.color,
@@ -149,7 +161,7 @@ class Rectangle extends Shape {
 
   const Rectangle({
 //^^^^^ storage.modifier.dart
-//      ^^^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//      ^^^^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 
     required super.color,
 //  ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
@@ -186,6 +198,7 @@ switch (value) { case 0: return 1; default: throw StateError('x'); }
 //                       ^^^^^^ keyword.control.dart
 //                                 ^^^^^^^ keyword.control.dart
 //                                          ^^^^^ keyword.control.dart
+//                                                ^^^^^^^^^^ support.class.dart
 
 switch (token) { case 'x' when isLetter(token): return 1; default: return 0; }
 // <- keyword.control.dart

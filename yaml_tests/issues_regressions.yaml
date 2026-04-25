@@ -21,7 +21,7 @@ tests:
       - span: "map"
         scopes: [variable.function.dart]
       - span: "StringBuffer"
-        scopes: [support.type.dart]
+        scopes: [support.class.dart]
       - span: "new"
         scopes: [keyword.operator.word.dart]
 
@@ -34,6 +34,8 @@ tests:
 
   - line: "Circle(color: 'red', radius: 5.0)"
     assertions:
+      - span: "Circle"
+        scopes: [support.class.dart]
       - span: "color"
         scopes: [variable.parameter.dart]
       - span: "radius"
@@ -80,7 +82,21 @@ tests:
       - span: "throw"
         scopes: [keyword.control.dart]
       - span: "ArgumentError"
-        scopes: [support.type.dart]
+        scopes: [support.class.dart]
+
+  - line: "try { fail(); } on StateError catch (error) { throw error; }"
+    assertions:
+      - span: "try"
+        scopes: [keyword.control.dart]
+      - span: "on"
+        scopes: [keyword.control.dart]
+      - span: "StateError"
+        scopes: [support.class.exception.dart]
+      - span: "catch"
+        scopes: [keyword.control.dart]
+      - span: "error"
+        scopes: [variable.other.readwrite.dart]
+        nth: 1
 
   - line: "return _expensiveWork(n);"
     assertions:
@@ -139,7 +155,7 @@ tests:
       - span: "factory"
         scopes: [meta.function.constructor.dart, keyword.declaration.function.dart]
       - span: "Either"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.type.constructor.dart]
         nth: 1
       - span: "left"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
@@ -218,7 +234,7 @@ tests:
   - line: "  Circle({"
     assertions:
       - span: "Circle"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
       - span: "{"
         scopes: [meta.function.parameters.dart, punctuation.section.parameters.begin.dart]
 
@@ -256,7 +272,7 @@ tests:
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Rectangle"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
 
   - line: "    required super.color,"
     assertions:
@@ -313,6 +329,8 @@ tests:
         scopes: [keyword.control.dart]
       - span: "throw"
         scopes: [keyword.control.dart]
+      - span: "StateError"
+        scopes: [support.class.dart]
 
   - line: "switch (token) { case 'x' when isLetter(token): return 1; default: return 0; }"
     assertions:

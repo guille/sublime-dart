@@ -90,7 +90,7 @@ tests:
   - line: "final callback = Mapper<int>.from(source);"
     assertions:
       - span: "Mapper"
-        scopes: [support.type.dart]
+        scopes: [support.class.dart]
       - span: "int"
         scopes: [meta.generic.dart, storage.type.dart]
       - span: "."
@@ -101,11 +101,72 @@ tests:
   - line: "final board = Chess.fromFEN(fen, check_validity: false);"
     assertions:
       - span: "Chess"
-        scopes: [support.type.dart]
+        scopes: [support.class.dart]
       - span: "fromFEN"
         scopes: [variable.function.dart]
       - span: "check_validity"
         scopes: [variable.parameter.dart]
+
+  - line: "_previewCodeGenerator = PreviewCodeGenerator();"
+    assertions:
+      - span: "_previewCodeGenerator"
+        scopes: [variable.other.readwrite.dart]
+      - span: "PreviewCodeGenerator"
+        scopes: [support.class.dart]
+
+  - line: "PreviewCodeGenerator generator = PreviewCodeGenerator();"
+    assertions:
+      - span: "PreviewCodeGenerator"
+        scopes: [support.type.dart]
+        nth: 0
+      - span: "generator"
+        scopes: [variable.other.readwrite.dart]
+      - span: "PreviewCodeGenerator"
+        scopes: [support.class.dart]
+        nth: 1
+
+  - line: "final parsed = int.parse('1');"
+    assertions:
+      - span: "int"
+        scopes: [support.class.dart]
+      - span: "parse"
+        scopes: [variable.function.dart]
+        nth: 1
+
+  - line: "WebServerDevice.showWebServerDevice = true;"
+    assertions:
+      - span: "WebServerDevice"
+        scopes: [support.class.dart]
+      - span: "."
+        scopes: [punctuation.accessor.dart]
+      - span: "showWebServerDevice"
+        scopes: [variable.other.readwrite.dart]
+      - span: "true"
+        scopes: [constant.language.dart]
+
+  - line: "final values = List<int>.filled(2, 0);"
+    assertions:
+      - span: "List"
+        scopes: [support.class.dart]
+      - span: "int"
+        scopes: [meta.generic.dart, storage.type.dart]
+      - span: "filled"
+        scopes: [variable.function.dart]
+
+  - line: "final casted = value as PreviewCodeGenerator;"
+    assertions:
+      - span: "as"
+        scopes: [keyword.operator.word.dart]
+        nth: 1
+      - span: "PreviewCodeGenerator"
+        scopes: [support.type.dart]
+
+  - line: "if (value is PreviewCodeGenerator) {}"
+    assertions:
+      - span: "is"
+        scopes: [keyword.operator.word.dart]
+      - span: "PreviewCodeGenerator"
+        scopes: [support.type.dart]
 
   - line: "label: while (true) break label;"
     assertions:

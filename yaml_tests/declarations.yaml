@@ -215,7 +215,7 @@ tests:
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Shape"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
         nth: 1
       - span: "required"
         scopes: [meta.function.parameters.dart, keyword.declaration.parameter.dart]
@@ -241,7 +241,7 @@ tests:
         scopes: [meta.class.dart, entity.name.class.dart]
         nth: 0
       - span: "MyClass"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
         nth: 1
       - span: "this"
         scopes: [meta.function.parameters.dart, variable.language.dart]
@@ -294,7 +294,7 @@ tests:
       - span: "const"
         scopes: [storage.modifier.dart]
       - span: "Point"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.type.constructor.dart]
         nth: 1
       - span: "origin"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
@@ -306,7 +306,7 @@ tests:
   - line: "class Point extends Base { Point.named(int x) : width = x, assert(x > 0), super(); }"
     assertions:
       - span: "Point"
-        scopes: [meta.function.constructor.dart, entity.name.class.dart]
+        scopes: [meta.function.constructor.dart, entity.name.type.constructor.dart]
         nth: 1
       - span: "named"
         scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
@@ -322,6 +322,51 @@ tests:
         scopes: [keyword.control.dart]
       - span: "super"
         scopes: [variable.language.dart]
+
+  - line: "class Chess {"
+
+  - line: "  Chess() {"
+    assertions:
+      - span: "Chess"
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+      - span: "{"
+        scopes: [meta.block.dart, punctuation.section.block.begin.dart]
+
+  - line: "    load(DEFAULT_POSITION);"
+    assertions:
+      - span: "load"
+        scopes: [variable.function.dart]
+
+  - line: "  }"
+
+  - line: "  Chess.fromFEN(String fen, {bool check_validity = true}) {"
+    assertions:
+      - span: "Chess"
+        scopes: [meta.function.constructor.dart, entity.name.type.constructor.dart]
+      - span: "fromFEN"
+        scopes: [meta.function.constructor.dart, entity.name.function.constructor.dart]
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "fen"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "bool"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "check_validity"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "true"
+        scopes: [meta.function.parameters.dart, constant.language.dart]
+
+  - line: "    load(fen, check_validity: check_validity);"
+    assertions:
+      - span: "load"
+        scopes: [variable.function.dart]
+      - span: "check_validity"
+        scopes: [variable.parameter.dart]
+        nth: 0
+
+  - line: "  }"
+
+  - line: "}"
 
   - line: "bool operator ==(Object other) => true;"
     assertions:

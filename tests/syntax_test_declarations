@@ -134,7 +134,7 @@ class Worker {
 class Shape { const Shape({required this.color}); }
 //    ^^^^^ meta.class.dart entity.name.class.dart
 //            ^^^^^ storage.modifier.dart
-//                  ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                  ^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 //                         ^^^^^^^^ meta.function.parameters.dart keyword.declaration.parameter.dart
 //                                  ^^^^ meta.function.parameters.dart variable.language.dart
 //                                       ^^^^^ meta.function.parameters.dart variable.parameter.dart
@@ -147,7 +147,7 @@ void configure({bool enabled = false}) {}
 
 class MyClass { MyClass({this.enabled = false}); }
 //    ^^^^^^^ meta.class.dart entity.name.class.dart
-//              ^^^^^^^ meta.function.constructor.dart entity.name.class.dart
+//              ^^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 //                       ^^^^ meta.function.parameters.dart variable.language.dart
 //                            ^^^^^^^ meta.function.parameters.dart variable.parameter.dart
 //                                    ^ meta.function.parameters.dart keyword.operator.assignment.dart
@@ -181,19 +181,47 @@ set value(int next) {}
 
 class Point { const Point.origin() : this(0, 0); }
 //            ^^^^^ storage.modifier.dart
-//                  ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                  ^^^^^ meta.function.constructor.dart entity.name.type.constructor.dart
 //                        ^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 //                                 ^ punctuation.separator.colon.dart
 //                                   ^^^^ variable.language.dart
 
 class Point extends Base { Point.named(int x) : width = x, assert(x > 0), super(); }
-//                         ^^^^^ meta.function.constructor.dart entity.name.class.dart
+//                         ^^^^^ meta.function.constructor.dart entity.name.type.constructor.dart
 //                               ^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
 //                                     ^^^ meta.function.parameters.dart storage.type.dart
 //                                         ^ meta.function.parameters.dart variable.parameter.dart
 //                                              ^^^^^ variable.other.readwrite.dart
 //                                                         ^^^^^^ keyword.control.dart
 //                                                                        ^^^^^ variable.language.dart
+
+class Chess {
+
+  Chess() {
+//^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+//        ^ meta.block.dart punctuation.section.block.begin.dart
+
+    load(DEFAULT_POSITION);
+//  ^^^^ variable.function.dart
+
+  }
+
+  Chess.fromFEN(String fen, {bool check_validity = true}) {
+//^^^^^ meta.function.constructor.dart entity.name.type.constructor.dart
+//      ^^^^^^^ meta.function.constructor.dart entity.name.function.constructor.dart
+//              ^^^^^^ meta.function.parameters.dart storage.type.dart
+//                     ^^^ meta.function.parameters.dart variable.parameter.dart
+//                           ^^^^ meta.function.parameters.dart storage.type.dart
+//                                ^^^^^^^^^^^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                                 ^^^^ meta.function.parameters.dart constant.language.dart
+
+    load(fen, check_validity: check_validity);
+//  ^^^^ variable.function.dart
+//            ^^^^^^^^^^^^^^ variable.parameter.dart
+
+  }
+
+}
 
 bool operator ==(Object other) => true;
 //   ^^^^^^^^ meta.function.dart keyword.declaration.function.dart

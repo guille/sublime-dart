@@ -79,6 +79,36 @@ int parse(String value, {required int radix = 10}) => 0;
 //                                            ^^ meta.function.parameters.dart constant.numeric.integer.decimal.dart
 //                                                 ^^ keyword.operator.arrow.dart
 
+String greet(String? name) {}
+// <- storage.type.dart
+ // <- storage.type.dart
+//^^^^ storage.type.dart
+//     ^^^^^ meta.function.dart entity.name.function.dart
+//           ^^^^^^ meta.function.parameters.dart storage.type.dart
+//                 ^ meta.function.parameters.dart storage.type.optional.dart
+//                   ^^^^ meta.function.parameters.dart variable.parameter.dart
+
+String? tag = 'foo';
+// <- storage.type.dart
+ // <- storage.type.dart
+//^^^^ storage.type.dart
+//    ^ storage.type.optional.dart
+//      ^^^ variable.other.readwrite.dart
+//          ^ keyword.operator.assignment.dart
+//            ^^^^^ string.quoted.single.dart
+
+int? tryFindIndex(List<int?> list, int target) {}
+// <- storage.type.dart
+ // <- storage.type.dart
+//^ storage.type.dart
+// ^ storage.type.optional.dart
+//   ^^^^^^^^^^^^ meta.function.dart entity.name.function.dart
+//                ^^^^ meta.function.parameters.dart storage.type.dart
+//                     ^^^ meta.function.parameters.dart meta.generic.dart storage.type.dart
+//                        ^ meta.function.parameters.dart meta.generic.dart storage.type.optional.dart
+//                           ^^^^ meta.function.parameters.dart variable.parameter.dart
+//                                     ^^^^^^ meta.function.parameters.dart variable.parameter.dart
+
 bool matches(bool Function(String value) predicate, {required int seed}) { return predicate('$seed'); }
 // <- storage.type.dart
  // <- storage.type.dart

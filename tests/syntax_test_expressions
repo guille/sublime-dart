@@ -10,13 +10,29 @@ items?..add(1)..clear();
 //            ^^ punctuation.accessor.dart
 //              ^^^^^ variable.function.dart
 
+callback?.call();
+// <- variable.other.readwrite.dart
+ // <- variable.other.readwrite.dart
+//^^^^^^ variable.other.readwrite.dart
+//      ^^ punctuation.accessor.dart
+
 value = condition ? left : right;
 // <- variable.other.readwrite.dart
  // <- variable.other.readwrite.dart
 //^^^ variable.other.readwrite.dart
 //    ^ keyword.operator.assignment.dart
-//                ^ keyword.operator.conditional.dart
-//                       ^ punctuation.separator.colon.dart
+//                ^ keyword.operator.ternary.dart
+//                       ^ keyword.operator.ternary.dart
+
+value = condition ? left?.value ?? fallback : right?.value;
+//                ^ keyword.operator.ternary.dart
+//                      ^^ punctuation.accessor.dart
+//                              ^^ keyword.operator.null-coalescing.dart
+//                                          ^ keyword.operator.ternary.dart
+//                                                 ^^ punctuation.accessor.dart
+
+value = primary ?? fallback;
+//              ^^ keyword.operator.null-coalescing.dart
 
 result ??= other as String;
 //     ^^^ keyword.operator.assignment.dart
@@ -42,14 +58,14 @@ List<Piece?> board = []..length = 128;
  // <- support.type.dart
 //^^ support.type.dart
 //   ^^^^^ meta.generic.dart support.type.dart
-//        ^ meta.generic.dart storage.modifier.optional.dart
+//        ^ meta.generic.dart storage.type.optional.dart
 //           ^^^^^ variable.other.readwrite.dart
 
 final data = <String, List<Piece?>>{};
 //            ^^^^^^ meta.generic.dart storage.type.dart
 //                    ^^^^ meta.generic.dart support.type.dart
 //                         ^^^^^ meta.generic.dart support.type.dart
-//                              ^ meta.generic.dart storage.modifier.optional.dart
+//                              ^ meta.generic.dart storage.type.optional.dart
 
 final callback = Mapper<int>.from(source);
 //               ^^^^^^ support.class.dart

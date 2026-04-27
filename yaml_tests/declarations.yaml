@@ -127,6 +127,57 @@ tests:
       - span: "=>"
         scopes: [keyword.operator.arrow.dart]
 
+  - line: "String greet(String? name) {}"
+    assertions:
+      - span: "String"
+        scopes: [storage.type.dart]
+        nth: 0
+      - span: "greet"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "String"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+        nth: 1
+      - span: "?"
+        scopes: [meta.function.parameters.dart, storage.type.optional.dart]
+      - span: "name"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
+  - line: "String? tag = 'foo';"
+    assertions:
+      - span: "String"
+        scopes: [storage.type.dart]
+      - span: "?"
+        scopes: [storage.type.optional.dart]
+      - span: "tag"
+        scopes: [variable.other.readwrite.dart]
+      - span: "="
+        scopes: [keyword.operator.assignment.dart]
+      - span: "'foo'"
+        scopes: [string.quoted.single.dart]
+
+  - line: "int? tryFindIndex(List<int?> list, int target) {}"
+    assertions:
+      - span: "int"
+        scopes: [storage.type.dart]
+        nth: 0
+      - span: "?"
+        scopes: [storage.type.optional.dart]
+        nth: 0
+      - span: "tryFindIndex"
+        scopes: [meta.function.dart, entity.name.function.dart]
+      - span: "List"
+        scopes: [meta.function.parameters.dart, storage.type.dart]
+      - span: "int"
+        scopes: [meta.function.parameters.dart, meta.generic.dart, storage.type.dart]
+        nth: 1
+      - span: "?"
+        scopes: [meta.function.parameters.dart, meta.generic.dart, storage.type.optional.dart]
+        nth: 1
+      - span: "list"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+      - span: "target"
+        scopes: [meta.function.parameters.dart, variable.parameter.dart]
+
   - line: "bool matches(bool Function(String value) predicate, {required int seed}) { return predicate('$seed'); }"
     assertions:
       - span: "bool"

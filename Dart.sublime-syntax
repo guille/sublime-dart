@@ -8,34 +8,35 @@ scope: source.dart
 version: 2
 
 variables:
-  identifier_start: '[A-Za-z_$]'
-  identifier_part: '[A-Za-z0-9_$]'
-  identifier: '(?:{{identifier_start}}{{identifier_part}}*)'
-  type_identifier: '(?:[A-Z]{{identifier_part}}*)'
+  identifier_start: "[A-Za-z_$]"
+  identifier_part: "[A-Za-z0-9_$]"
+  identifier: "(?:{{identifier_start}}{{identifier_part}}*)"
+  type_identifier: "(?:[A-Z]{{identifier_part}}*)"
   shebang_language: '\bdart\b'
-  keyword_boundary: '(?!{{identifier_part}})'
-  builtin_types: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)'
-  storage_modifiers: '(?:abstract|augment|base|const|covariant|external|final|interface|late|required|sealed|static)'
-  declaration_keywords: '(?:class|enum|export|extension|factory|get|implements|import|library|mixin|operator|part|set|typedef|with)'
-  control_keywords: '(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|is|on|rethrow|return|switch|throw|try|when|while|yield)'
-  constants: '(?:false|null|super|this|true)'
-  reserved_word: '(?:{{storage_modifiers}}|{{declaration_keywords}}|{{control_keywords}}|{{builtin_types}}|{{constants}}|as|async|await|deferred|extends|hide|new|of|show|sync|type|var)'
-  plain_identifier: '(?!{{reserved_word}}{{keyword_boundary}}){{identifier}}'
-  numeric_separator_digits: '[0-9](?:_?[0-9])*'
-  numeric_separator_hex: '{{hex_digit}}(?:_?{{hex_digit}})*'
-  hex_digit: '[0-9A-Fa-f]'
-  exponent: '[eE][+-]?{{numeric_separator_digits}}'
-  decimal_integer: '(?:0|[1-9](?:_?[0-9])*)'
+  keyword_boundary: "(?!{{identifier_part}})"
+  builtin_types: "(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)"
+  storage_modifiers: "(?:abstract|augment|base|const|covariant|external|final|interface|late|required|sealed|static)"
+  declaration_keywords: "(?:class|enum|export|extension|factory|get|implements|import|library|mixin|operator|part|set|typedef|with)"
+  control_keywords: "(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|is|on|rethrow|return|switch|throw|try|when|while|yield)"
+  constants: "(?:false|null|super|this|true)"
+  reserved_word: "(?:{{storage_modifiers}}|{{declaration_keywords}}|{{control_keywords}}|{{builtin_types}}|{{constants}}|as|async|await|deferred|extends|hide|new|of|show|sync|type|var)"
+  plain_identifier: "(?!{{reserved_word}}{{keyword_boundary}}){{identifier}}"
+  numeric_separator_digits: "[0-9](?:_?[0-9])*"
+  numeric_separator_hex: "{{hex_digit}}(?:_?{{hex_digit}})*"
+  hex_digit: "[0-9A-Fa-f]"
+  exponent: "[eE][+-]?{{numeric_separator_digits}}"
+  decimal_integer: "(?:0|[1-9](?:_?[0-9])*)"
   decimal_fraction: '(?:(?:{{numeric_separator_digits}}?\.(?:{{numeric_separator_digits}}))|(?:{{numeric_separator_digits}}\.))'
   assignment_operator: '(?:=|\+=|-=|\*=|/=|~/=|%=|<<=|>>=|>>>=|&=|\^=|\|=|\?\?=)'
-  unary_word_operators: '(?:await|new|throw)'
-  control_statement_keywords: '(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|on|rethrow|return|switch|try|while|yield)'
-  import_keywords: '(?:import|export|part|library)'
+  unary_word_operators: "(?:await|new|throw)"
+  control_statement_keywords: "(?:assert|break|case|catch|continue|default|do|else|finally|for|if|in|on|rethrow|return|switch|try|while|yield)"
+  import_keywords: "(?:import|export|part|library)"
   declaration_start: '(?:abstract\s+|augment\s+|base\s+|final\s+|const\s+|sealed\s+|interface\s+|external\s+|late\s+|static\s+)*'
   lookahead_type_params: '(?=\s*(?:<|\(|=>|\{|;|=|\?|:|,))'
   qualified_identifier: '(?:{{identifier}}(?:\.{{identifier}})*)'
   generic_clause: '(?:<[^(){};\n]*>)'
   type_ref: '(?:(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)(?:\s*\.\s*(?:{{builtin_types}}|{{plain_identifier}})(?:{{generic_clause}})?(?:\?)?)*'
+  declaration_type_ref: '(?:(?:{{builtin_types}}|{{type_identifier}})(?:{{generic_clause}})?(?:\?)?)(?:\s*\.\s*(?:{{builtin_types}}|{{type_identifier}})(?:{{generic_clause}})?(?:\?)?)*'
   balanced_parens: '(?<balanced_parens>\((?:[^()]|\g<balanced_parens>)*\))'
 
 contexts:
@@ -65,10 +66,10 @@ contexts:
     - include: block-comments
 
   line-comments:
-    - match: '///+'
+    - match: "///+"
       scope: punctuation.definition.comment.dart
       push: doc-line-comment-body
-    - match: '//+'
+    - match: "//+"
       scope: punctuation.definition.comment.dart
       push: line-comment-body
 
@@ -115,7 +116,7 @@ contexts:
   shebang-body:
     - meta_include_prototype: false
     - meta_scope: comment.line.shebang.dart
-    - match: '{{shebang_language}}'
+    - match: "{{shebang_language}}"
       scope: constant.language.shebang.dart
     - match: $
       pop: 1
@@ -143,13 +144,13 @@ contexts:
       scope: keyword.control.import.dart
     - match: '\b(?:show|hide)\b'
       scope: keyword.control.import.dart
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.other.readwrite.dart
     - include: punctuation-commas
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
-    - match: '$'
+    - match: "$"
       pop: 1
 
   export-directive:
@@ -161,13 +162,13 @@ contexts:
     - include: strings
     - match: '\b(?:show|hide)\b'
       scope: keyword.control.import.dart
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.other.readwrite.dart
     - include: punctuation-commas
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
-    - match: '$'
+    - match: "$"
       pop: 1
 
   part-directive:
@@ -179,14 +180,14 @@ contexts:
     - include: strings
     - match: '\bof\b'
       scope: keyword.control.import.dart
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.namespace.dart
     - match: '\.'
       scope: punctuation.accessor.dart
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
-    - match: '$'
+    - match: "$"
       pop: 1
 
   library-directive:
@@ -195,14 +196,14 @@ contexts:
       scope: keyword.control.import.dart
     - include: whitespace
     - include: metadata
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.namespace.dart
     - match: '\.'
       scope: punctuation.accessor.dart
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
-    - match: '$'
+    - match: "$"
       pop: 1
 
   declarations:
@@ -235,14 +236,14 @@ contexts:
     - include: declarations
 
   metadata:
-    - match: '@'
+    - match: "@"
       scope: punctuation.definition.annotation.dart
       push: annotation-body
 
   annotation-body:
     - meta_scope: meta.annotation.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.annotation.dart
     - match: '\.'
       scope: punctuation.accessor.dart
@@ -263,7 +264,7 @@ contexts:
   class-name:
     - meta_scope: meta.class.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.class.dart
       set: class-after-name
     - match: '(?=\S)'
@@ -272,7 +273,7 @@ contexts:
   class-after-name:
     - meta_scope: meta.class.dart
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-parameters
     - match: '\bextends\b'
       scope: keyword.declaration.class.inheritance.dart
@@ -285,7 +286,7 @@ contexts:
     - match: '\{'
       scope: punctuation.section.block.begin.dart
       set: member-body
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - match: '(?=\S)'
@@ -303,7 +304,7 @@ contexts:
   mixin-name:
     - meta_scope: meta.class.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.class.dart
       set: mixin-after-name
     - match: '(?=\S)'
@@ -312,7 +313,7 @@ contexts:
   mixin-after-name:
     - meta_scope: meta.class.dart
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-parameters
     - match: '\b(?:on|implements)\b'
       scope: keyword.declaration.class.inheritance.dart
@@ -340,7 +341,7 @@ contexts:
     - match: '\bon\b'
       scope: keyword.declaration.class.inheritance.dart
       set: extension-after-on
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.class.dart
       set: extension-after-name
     - match: '(?=\S)'
@@ -349,7 +350,7 @@ contexts:
   extension-after-name:
     - meta_scope: meta.class.dart
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-parameters
     - match: '\bon\b'
       scope: keyword.declaration.class.inheritance.dart
@@ -382,7 +383,7 @@ contexts:
   enum-name:
     - meta_scope: meta.enum.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.enum.dart
       set: enum-after-name
     - match: '(?=\S)'
@@ -412,10 +413,10 @@ contexts:
       pop: 1
     - match: '(?=\b(?:var|final|const|late|static|abstract|augment|base|covariant|external|interface|required|sealed|factory|get|set|operator|class|mixin|extension|enum|typedef)\b)'
       set: enum-body
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.constant.dart
       set: enum-entry-after-name
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       set: enum-body
     - match: '(?=\S)'
@@ -428,10 +429,10 @@ contexts:
       push: arguments
     - match: '(?=\{)'
       push: brace-body
-    - match: ','
+    - match: ","
       scope: punctuation.separator.comma.dart
       set: enum-entry-list
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       set: enum-body
     - match: '\}'
@@ -452,7 +453,7 @@ contexts:
     - include: member-declarations
     - include: control-keywords
     - include: punctuation-commas
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
     - include: expressions
     - include: punctuation
@@ -524,14 +525,14 @@ contexts:
     - match: '\.'
       scope: punctuation.accessor.dart
       push: constructor-name-segment
-    - match: ''
+    - match: ""
       pop: 1
 
   constructor-name-segment:
     - include: whitespace
     - match: '\b{{plain_identifier}}\b'
       scope: entity.name.function.constructor.dart
-    - match: ''
+    - match: ""
       pop: 1
 
   expect-constructor-parameters:
@@ -543,16 +544,16 @@ contexts:
 
   constructor-after-signature:
     - include: whitespace
-    - match: ':'
+    - match: ":"
       scope: punctuation.separator.colon.dart
       set: constructor-initializers
-    - match: '=>'
+    - match: "=>"
       scope: keyword.operator.arrow.dart
       set: expression-until-terminator
     - match: '\{'
       scope: punctuation.section.block.begin.dart
       set: block-body
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - match: '(?=\S)'
@@ -561,13 +562,13 @@ contexts:
   constructor-initializers:
     - include: whitespace
     - include: comments
-    - match: '=>'
+    - match: "=>"
       scope: keyword.operator.arrow.dart
       set: expression-until-terminator
     - match: '\{'
       scope: punctuation.section.block.begin.dart
       set: block-body
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - include: control-keywords
@@ -577,7 +578,7 @@ contexts:
   typedef-name:
     - meta_scope: meta.declaration.typealias.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.type.dart
       set: typedef-after-name
     - match: '(?=\S)'
@@ -586,15 +587,15 @@ contexts:
   typedef-after-name:
     - meta_scope: meta.declaration.typealias.dart
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-parameters
-    - match: '='
+    - match: "="
       scope: keyword.operator.assignment.dart
     - include: type-parameters-trigger
     - include: types
     - match: '(?=\()'
       push: parameter-type-list
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - match: '(?=\S)'
@@ -616,7 +617,7 @@ contexts:
   accessor-name:
     - meta_scope: meta.function.accessor.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.function.dart
       set: function-after-signature
     - match: '(?=\S)'
@@ -625,7 +626,7 @@ contexts:
   accessor-name-and-params:
     - meta_scope: meta.function.accessor.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.function.dart
       set: expect-parameters
     - match: '(?=\S)'
@@ -635,7 +636,7 @@ contexts:
     - meta_scope: meta.function.dart
     - include: declaration-prefix
     - include: types
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.function.dart
       set: function-after-name
     - match: '(?=\S)'
@@ -644,7 +645,7 @@ contexts:
   function-after-name:
     - meta_scope: meta.function.dart
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-parameters
     - match: '(?=\()'
       set: expect-parameters
@@ -664,13 +665,13 @@ contexts:
       scope: storage.modifier.dart
     - match: '\*'
       scope: keyword.operator.arithmetic.dart
-    - match: '=>'
+    - match: "=>"
       scope: keyword.operator.arrow.dart
       set: expression-until-terminator
     - match: '\{'
       scope: punctuation.section.block.begin.dart
       set: block-body
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - match: '(?=\S)'
@@ -751,13 +752,13 @@ contexts:
   variable-declaration-statements:
     - match: '(?=\bvar\s+{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?!\s+in\b))'
       push: variable-declaration-statement
-    - match: '(?=\b(?:final|const)\b(?:\s+(?:(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?(?:\s*\.\s*(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?)*\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$)))?\s*=)'
+    - match: '(?=\b(?:final|const)\b(?:\s+(?:{{declaration_type_ref}}\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$)))?\s*=)'
       push: variable-declaration-statement
-    - match: '(?=\blate\b(?:\s+(?:final\s+)?)?(?:(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?(?:\s*\.\s*(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?)*\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?:\s*=)?)'
+    - match: '(?=\blate\b(?:\s+(?:final\s+)?)?(?:{{declaration_type_ref}}\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?:\s*=)?)'
       push: variable-declaration-statement
-    - match: '(?=\b(?:static|covariant)\b(?:\s+(?:late\s+)?(?:final\s+)?)?(?:(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?(?:\s*\.\s*(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?)*\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?:\s*=)?)'
+    - match: '(?=\b(?:static|covariant)\b(?:\s+(?:late\s+)?(?:final\s+)?)?(?:{{declaration_type_ref}}\s+)?{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?:\s*=)?)'
       push: variable-declaration-statement
-    - match: '(?=\b(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?(?:\s*\.\s*(?:{{builtin_types}}|{{type_identifier}})\b(?:\s*<[^;=(){}\n]*>)?)*\s+{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?!\s+in\b))'
+    - match: '(?=\b{{declaration_type_ref}}\s+{{plain_identifier}}\b(?=\s*(?:=|,|;|$))(?!\s+in\b))'
       push: variable-declaration-statement
 
   variable-declaration-statement:
@@ -768,13 +769,13 @@ contexts:
       scope: storage.modifier.dart
     - include: type-parameters-trigger
     - include: types
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.other.readwrite.dart
-    - match: '{{assignment_operator}}'
+    - match: "{{assignment_operator}}"
       scope: keyword.operator.assignment.dart
       set: expression-until-terminator
     - include: punctuation-commas
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
     - match: '(?=\n|$)'
@@ -815,7 +816,7 @@ contexts:
   switch-expression-guard-after-when:
     - include: whitespace
     - include: comments
-    - match: '(?==>)'
+    - match: "(?==>)"
       pop: 1
     - match: '\('
       scope: punctuation.section.group.begin.dart
@@ -827,7 +828,7 @@ contexts:
       scope: punctuation.section.block.begin.dart
       push: switch-expression-guard-braces
     - include: expressions
-    - match: '$'
+    - match: "$"
       pop: 1
 
   switch-expression-guard-group:
@@ -892,7 +893,7 @@ contexts:
       scope: support.class.exception.dart
       pop: 1
     - include: types
-    - match: ''
+    - match: ""
       pop: 1
 
   anonymous-variable:
@@ -910,11 +911,103 @@ contexts:
     - include: whitespace
     - include: comments
     - include: expressions
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
       pop: 1
-    - match: '$'
+    - match: "$"
       pop: 1
+
+  ternary-expression:
+    - include: whitespace
+    - include: comments
+    - match: '\?\.\.'
+      scope: punctuation.accessor.dart
+    - match: '\?\.'
+      scope: punctuation.accessor.dart
+    - match: '\?\?'
+      scope: keyword.operator.null-coalescing.dart
+    - match: '\?'
+      scope: keyword.operator.ternary.dart
+      push: ternary-expression
+    - match: ":"
+      scope: keyword.operator.ternary.dart
+      pop: 1
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: ternary-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: ternary-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: ternary-braces
+    - match: '(?=[;,\)\]\}])'
+      pop: 1
+    - include: ternary-branch-content
+
+  ternary-group:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: ternary-group
+    - match: '\)'
+      scope: punctuation.section.group.end.dart
+      pop: 1
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: ternary-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: ternary-braces
+    - include: expressions
+
+  ternary-brackets:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: ternary-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: ternary-brackets
+    - match: '\]'
+      scope: punctuation.section.brackets.end.dart
+      pop: 1
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: ternary-braces
+    - include: expressions
+
+  ternary-braces:
+    - include: whitespace
+    - include: comments
+    - match: '\('
+      scope: punctuation.section.group.begin.dart
+      push: ternary-group
+    - match: '\['
+      scope: punctuation.section.brackets.begin.dart
+      push: ternary-brackets
+    - match: '\{'
+      scope: punctuation.section.block.begin.dart
+      push: ternary-braces
+    - match: '\}'
+      scope: punctuation.section.block.end.dart
+      pop: 1
+    - include: expressions
+
+  ternary-branch-content:
+    - include: metadata
+    - include: strings
+    - include: numbers
+    - include: symbols
+    - include: booleans-and-null
+    - include: keyword-operators-and-controls
+    - include: anonymous-variable
+    - include: constructors-and-types
+    - include: operators
+    - include: parameters-and-identifiers
+    - include: punctuation
 
   strings:
     - include: raw-triple-double-string
@@ -1108,27 +1201,27 @@ contexts:
       push: class-reference-with-arguments
 
   class-reference-with-arguments:
-    - match: '{{builtin_types}}'
+    - match: "{{builtin_types}}"
       scope: support.class.dart
       set: class-reference-after-identifier
-    - match: '{{type_identifier}}'
+    - match: "{{type_identifier}}"
       scope: support.class.dart
       set: class-reference-after-identifier
-    - match: ''
+    - match: ""
       pop: 1
 
   class-reference-after-identifier:
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       set: [class-reference-post-type-arguments, type-arguments]
-    - match: ''
+    - match: ""
       pop: 1
 
   class-reference-post-type-arguments:
     - include: whitespace
     - match: '(?=\.)'
       push: qualified-class-reference-tail
-    - match: ''
+    - match: ""
       pop: 1
 
   qualified-class-reference-tail:
@@ -1140,10 +1233,10 @@ contexts:
     - match: '{{identifier}}(?=\s*\()'
       scope: variable.function.dart
       set: class-reference-post-type-arguments
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.other.readwrite.dart
       set: class-reference-post-type-arguments
-    - match: ''
+    - match: ""
       pop: 1
 
   collection-type-arguments-trigger:
@@ -1155,27 +1248,27 @@ contexts:
       push: typed-identifier-with-arguments
 
   typed-identifier-with-arguments:
-    - match: '{{builtin_types}}'
+    - match: "{{builtin_types}}"
       scope: storage.type.dart
       set: type-arguments-after-identifier
-    - match: '{{type_identifier}}'
+    - match: "{{type_identifier}}"
       scope: support.type.dart
       set: type-arguments-after-identifier
-    - match: ''
+    - match: ""
       pop: 1
 
   type-arguments-after-identifier:
     - include: whitespace
-    - match: '(?=<)'
+    - match: "(?=<)"
       set: [post-type-arguments, type-arguments]
-    - match: ''
+    - match: ""
       pop: 1
 
   post-type-arguments:
     - include: whitespace
     - match: '(?=\.)'
       push: qualified-type-tail
-    - match: ''
+    - match: ""
       pop: 1
 
   qualified-type-tail:
@@ -1184,15 +1277,15 @@ contexts:
     - match: '{{identifier}}(?=\s*\()'
       scope: variable.function.dart
       set: post-type-arguments
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: support.type.dart
       set: post-type-arguments
-    - match: ''
+    - match: ""
       pop: 1
 
   type-parameters:
     - meta_scope: meta.generic.dart
-    - match: '<'
+    - match: "<"
       scope: punctuation.definition.generic.begin.dart
       set: type-parameter-list
 
@@ -1200,10 +1293,10 @@ contexts:
     - meta_scope: meta.generic.dart
     - include: whitespace
     - include: metadata
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: entity.name.type.parameter.dart
       set: type-parameter-after-name
-    - match: '>'
+    - match: ">"
       scope: punctuation.definition.generic.end.dart
       pop: 1
     - match: '(?=\{|\(|=|;|\)|=>|:)'
@@ -1215,10 +1308,10 @@ contexts:
     - match: '\bextends\b'
       scope: keyword.declaration.class.inheritance.dart
       set: type-parameter-bound
-    - match: ','
+    - match: ","
       scope: punctuation.separator.comma.dart
       set: type-parameter-list
-    - match: '>'
+    - match: ">"
       scope: punctuation.definition.generic.end.dart
       pop: 1
     - match: '(?=\{|\(|=|;|\)|=>|:)'
@@ -1230,10 +1323,10 @@ contexts:
     - include: metadata
     - include: type-parameters-trigger
     - include: types
-    - match: ','
+    - match: ","
       scope: punctuation.separator.comma.dart
       set: type-parameter-list
-    - match: '>'
+    - match: ">"
       scope: punctuation.definition.generic.end.dart
       pop: 1
     - match: '(?=\{|\(|=|;|\)|=>|:)'
@@ -1241,38 +1334,36 @@ contexts:
 
   type-arguments:
     - meta_scope: meta.generic.dart
-    - match: '<'
+    - match: "<"
       scope: punctuation.definition.generic.begin.dart
     - include: whitespace
     - include: type-parameters-trigger
     - include: types
-    - match: '\?'
-      scope: storage.modifier.optional.dart
     - include: punctuation-commas
-    - match: '>'
+    - match: ">"
       scope: punctuation.definition.generic.end.dart
       pop: 1
-    - match: '(?=\{|\(|=|;|\)|=>|:)' 
+    - match: '(?=\{|\(|=|;|\)|=>|:)'
       pop: 1
 
   inherited-type-reference:
     - include: whitespace
     - include: inherited-type-name
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-arguments
-    - match: ''
+    - match: ""
       pop: 1
 
   inherited-type-reference-list:
     - include: whitespace
     - include: inherited-type-name
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-arguments
-    - match: ','
+    - match: ","
       scope: punctuation.separator.comma.dart
     - match: '(?=\{|\bwith\b|\bimplements\b|\bon\b|;|$)'
       pop: 1
-    - match: ''
+    - match: ""
       pop: 1
 
   inherited-type-name:
@@ -1284,19 +1375,23 @@ contexts:
       scope: punctuation.accessor.dart
 
   types:
-    - match: '\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b'
-      scope: storage.type.dart
-    - match: '\b{{type_identifier}}\b'
-      scope: support.type.dart
-    - match: '\b{{identifier}}\b(?=\s*[?.]?\s*Function\b)'
-      scope: support.type.dart
-    - match: '\bFunction\b'
-      scope: storage.type.dart
+    - match: '(\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b)(\?)?'
+      captures:
+        1: storage.type.dart
+        2: storage.type.optional.dart
+    - match: '(\b{{type_identifier}}\b)(\?)?'
+      captures:
+        1: support.type.dart
+        2: storage.type.optional.dart
+    - match: '(\b{{identifier}}\b(?=\s*[?.]?\s*Function\b))(\?)?'
+      captures:
+        1: support.type.dart
+        2: storage.type.optional.dart
     - match: '\.'
       scope: punctuation.accessor.dart
 
   parameters-and-identifiers:
-    - match: '\b{{identifier}}\b(?=\s*:)' 
+    - match: '\b{{identifier}}\b(?=\s*:)'
       scope: variable.parameter.dart
     - match: '\b{{identifier}}\b(?=\s*[,)\]}=])'
       scope: variable.other.readwrite.dart
@@ -1334,18 +1429,18 @@ contexts:
         1: storage.type.dart
         3: punctuation.section.parameters.begin.dart
       push: function-type-parameter-list
-    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
-      scope: storage.type.dart
-    - match: '\bFunction\b'
-      scope: storage.type.dart
+    - match: '(\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b|\b{{type_identifier}}\b|\b{{plain_identifier}}\b(?=\s*Function\b))(\?)?'
+      captures:
+        1: storage.type.dart
+        2: storage.type.optional.dart
     - include: type-parameters-trigger
     - include: types
     - match: '{{identifier}}(?=\s*\()'
       scope: variable.parameter.dart
       set: parameter-function-tail
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.parameter.dart
-    - match: '[:=]'
+    - match: "[:=]"
       scope: keyword.operator.assignment.dart
       push: parameter-default-value
     - include: punctuation-commas
@@ -1382,18 +1477,18 @@ contexts:
         1: storage.type.dart
         3: punctuation.section.parameters.begin.dart
       push: function-type-parameter-list
-    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
-      scope: storage.type.dart
-    - match: '\bFunction\b'
-      scope: storage.type.dart
+    - match: '(\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b|\b{{type_identifier}}\b|\b{{plain_identifier}}\b(?=\s*Function\b))(\?)?'
+      captures:
+        1: storage.type.dart
+        2: storage.type.optional.dart
     - include: type-parameters-trigger
     - include: types
     - match: '{{identifier}}(?=\s*\()'
       scope: variable.parameter.dart
       set: parameter-function-tail
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.parameter.dart
-    - match: '[:=]'
+    - match: "[:=]"
       scope: keyword.operator.assignment.dart
       push: parameter-default-value
     - include: punctuation-commas
@@ -1402,7 +1497,7 @@ contexts:
     - meta_scope: meta.function.parameters.dart
     - include: whitespace
     - include: comments
-    - match: '(?=,)'
+    - match: "(?=,)"
       pop: 1
     - match: '(?=[)\]\}])'
       pop: 1
@@ -1476,7 +1571,7 @@ contexts:
     - include: whitespace
     - match: '(?=\()'
       push: parameter-type-list
-    - match: ''
+    - match: ""
       pop: 1
 
   function-type-parameter-list:
@@ -1508,26 +1603,28 @@ contexts:
         1: storage.type.dart
         3: punctuation.section.parameters.begin.dart
       push: function-type-parameter-list
-    - match: '(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void)|{{type_identifier}}|{{plain_identifier}}(?=\s*Function\b)'
-      scope: storage.type.dart
-    - match: '\bFunction\b'
-      scope: storage.type.dart
+    - match: '(\b(?:bool|double|dynamic|int|Never|Null|num|Object|Record|String|void|Function)\b|\b{{type_identifier}}\b|\b{{plain_identifier}}\b(?=\s*Function\b))(\?)?'
+      captures:
+        1: storage.type.dart
+        2: storage.type.optional.dart
     - include: type-parameters-trigger
     - include: types
     - match: '{{identifier}}(?=\s*\()'
       scope: variable.parameter.dart
       set: parameter-function-tail
-    - match: '{{identifier}}'
+    - match: "{{identifier}}"
       scope: variable.parameter.dart
     - include: punctuation-commas
 
   function-type-after-parameter-list:
     - meta_scope: meta.function.parameters.dart
     - include: whitespace
-    - match: '{{identifier}}'
+    - match: '\?'
+      scope: storage.type.optional.dart
+    - match: "{{identifier}}"
       scope: variable.parameter.dart
       pop: 1
-    - match: ''
+    - match: ""
       pop: 1
 
   arguments:
@@ -1559,19 +1656,20 @@ contexts:
       scope: punctuation.accessor.dart
     - match: '\?\.'
       scope: punctuation.accessor.dart
-    - match: '=>'
+    - match: "=>"
       scope: keyword.operator.arrow.dart
-    - match: '{{assignment_operator}}'
+    - match: "{{assignment_operator}}"
       scope: keyword.operator.assignment.dart
     - match: '\?\?'
       scope: keyword.operator.null-coalescing.dart
     - match: '\?'
-      scope: keyword.operator.conditional.dart
-    - match: ':'
+      scope: keyword.operator.ternary.dart
+      push: ternary-expression
+    - match: ":"
       scope: punctuation.separator.colon.dart
     - match: '\.\.'
       scope: punctuation.accessor.dart
-    - match: '(?:===|==|!=|<=|>=|<|>)'
+    - match: "(?:===|==|!=|<=|>=|<|>)"
       scope: keyword.operator.comparison.dart
     - match: '(?:&&|\|\||!)'
       scope: keyword.operator.logical.dart
@@ -1581,16 +1679,16 @@ contexts:
       scope: keyword.operator.increment-decrement.dart
     - match: '(?:\+|-|\*|/|~/|%)'
       scope: keyword.operator.arithmetic.dart
-    - match: '='
+    - match: "="
       scope: keyword.operator.assignment.dart
 
   type-reference-after-operator:
     - include: whitespace
     - include: comments
-    - match: '(?=<)'
+    - match: "(?=<)"
       push: type-arguments
     - include: types
-    - match: ''
+    - match: ""
       pop: 1
 
   punctuation:
@@ -1610,11 +1708,11 @@ contexts:
 
   punctuation-common:
     - include: punctuation-commas
-    - match: ';'
+    - match: ";"
       scope: punctuation.terminator.dart
     - match: '\.'
       scope: punctuation.accessor.dart
 
   punctuation-commas:
-    - match: ','
+    - match: ","
       scope: punctuation.separator.comma.dart

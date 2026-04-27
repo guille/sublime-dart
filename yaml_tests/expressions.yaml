@@ -17,6 +17,13 @@ tests:
       - span: "clear"
         scopes: [variable.function.dart]
 
+  - line: "callback?.call();"
+    assertions:
+      - span: "callback"
+        scopes: [variable.other.readwrite.dart]
+      - span: "?."
+        scopes: [punctuation.accessor.dart]
+
   - line: "value = condition ? left : right;"
     assertions:
       - span: "value"
@@ -24,9 +31,29 @@ tests:
       - span: "="
         scopes: [keyword.operator.assignment.dart]
       - span: "?"
-        scopes: [keyword.operator.conditional.dart]
+        scopes: [keyword.operator.ternary.dart]
       - span: ":"
-        scopes: [punctuation.separator.colon.dart]
+        scopes: [keyword.operator.ternary.dart]
+
+  - line: "value = condition ? left?.value ?? fallback : right?.value;"
+    assertions:
+      - span: "?"
+        scopes: [keyword.operator.ternary.dart]
+      - span: "?."
+        scopes: [punctuation.accessor.dart]
+        nth: 0
+      - span: "??"
+        scopes: [keyword.operator.null-coalescing.dart]
+      - span: ":"
+        scopes: [keyword.operator.ternary.dart]
+      - span: "?."
+        scopes: [punctuation.accessor.dart]
+        nth: 1
+
+  - line: "value = primary ?? fallback;"
+    assertions:
+      - span: "??"
+        scopes: [keyword.operator.null-coalescing.dart]
 
   - line: "result ??= other as String;"
     assertions:
@@ -72,7 +99,7 @@ tests:
       - span: "Piece"
         scopes: [meta.generic.dart, support.type.dart]
       - span: "?"
-        scopes: [meta.generic.dart, storage.modifier.optional.dart]
+        scopes: [meta.generic.dart, storage.type.optional.dart]
       - span: "board"
         scopes: [variable.other.readwrite.dart]
 
@@ -85,7 +112,7 @@ tests:
       - span: "Piece"
         scopes: [meta.generic.dart, support.type.dart]
       - span: "?"
-        scopes: [meta.generic.dart, storage.modifier.optional.dart]
+        scopes: [meta.generic.dart, storage.type.optional.dart]
 
   - line: "final callback = Mapper<int>.from(source);"
     assertions:
